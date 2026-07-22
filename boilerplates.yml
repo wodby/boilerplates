@@ -1,0 +1,220 @@
+version: 1
+
+boilerplates:
+  - name: django
+    title: Django boilerplate
+    repository: wodby/django-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-django
+        manifest: service.yml
+        template: django
+        ref:
+          branch: main
+
+  - name: drupal-cms
+    title: Drupal CMS
+    repository: wodby/drupal-cms-template
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: specialized
+    services:
+      - repository: wodby/service-drupal-php
+        manifest: 11/service.yml
+        template: cms
+        ref:
+          branch: main
+
+  - name: drupal-vanilla
+    title: Vanilla Drupal
+    repository: wodby/drupal-vanilla
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: specialized
+    services:
+      - repository: wodby/service-drupal-php
+        manifest: 11/service.yml
+        template: vanilla
+        ref:
+          branch: 11.x
+      - repository: wodby/service-drupal-php
+        manifest: 10/service.yml
+        template: vanilla
+        ref:
+          branch: 10.x
+
+  - name: expressjs
+    title: Express.js boilerplate
+    repository: wodby/expressjs-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-node
+        manifest: service.yml
+        template: expressjs
+        ref:
+          branch: main
+
+  - name: fastapi
+    title: FastAPI boilerplate
+    repository: wodby/fastapi-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-fastapi
+        manifest: service.yml
+        template: fastapi
+        ref:
+          branch: main
+
+  - name: flask
+    title: Flask boilerplate
+    repository: wodby/flask-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-flask
+        manifest: service.yml
+        template: flask
+        ref:
+          branch: main
+
+  - name: nextjs
+    title: Next.js boilerplate
+    repository: wodby/nextjs-boilerplate
+    aliases:
+      - wodby/nextjs
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-httpd
+        manifest: service.yml
+        template: nextjs
+        ref:
+          branch: main
+      - repository: wodby/service-nextjs
+        manifest: service.yml
+        template: nextjs
+        ref:
+          branch: main
+
+  - name: php-package
+    title: Composer boilerplate
+    repository: wodby/php-package-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-php
+        manifest: service.yml
+        template: composer
+        ref:
+          branch: master
+
+  - name: python
+    title: Python boilerplate
+    repository: wodby/python-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-python
+        manifest: service.yml
+        template: python
+        ref:
+          branch: main
+
+  - name: rails
+    title: Rails boilerplate
+    repository: wodby/rails-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-rails
+        manifest: service.yml
+        template: rails
+        ref:
+          branch: main
+
+  - name: react
+    title: React boilerplate
+    repository: wodby/react-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-nginx
+        manifest: service.yml
+        template: react
+        ref:
+          branch: main
+
+  - name: ruby
+    title: Ruby boilerplate
+    repository: wodby/ruby-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-ruby
+        manifest: service.yml
+        template: ruby
+        ref:
+          branch: main
+
+  - name: wordpress-vanilla
+    title: Vanilla WordPress
+    repository: wodby/wordpress-vanilla
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: specialized
+    services:
+      - repository: wodby/service-wordpress-php
+        manifest: service.yml
+        template: vanilla
+        ref:
+          branch: main
+
+  - name: laravel
+    title: Laravel boilerplate
+    repository: laravel/laravel
+    managed: false
+    services:
+      - repository: wodby/service-laravel-php
+        manifest: service.yml
+        template: boilerplate
+        ref:
+          tag: ^11
+        pipeline: pipeline.yml
+
+  - name: matomo
+    title: Vanilla Matomo
+    repository: matomo-org/matomo
+    managed: false
+    services:
+      - repository: wodby/service-matomo
+        manifest: service.yml
+        template: vanilla
+        ref:
+          tag: ^5
+        pipeline: pipeline.yml
