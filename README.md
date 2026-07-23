@@ -24,6 +24,7 @@ but Wodby does not update their repositories.
 | [Express.js](https://github.com/wodby/expressjs-boilerplate) | Generic | [`service-node`](https://github.com/wodby/service-node) |
 | [FastAPI](https://github.com/wodby/fastapi-boilerplate) | Generic | [`service-fastapi`](https://github.com/wodby/service-fastapi) |
 | [Flask](https://github.com/wodby/flask-boilerplate) | Generic | [`service-flask`](https://github.com/wodby/service-flask) |
+| [Go](https://github.com/wodby/go-boilerplate) | Generic | [`service-go`](https://github.com/wodby/service-go) |
 | [Next.js](https://github.com/wodby/nextjs-boilerplate) | Generic | [`service-httpd`](https://github.com/wodby/service-httpd), [`service-nextjs`](https://github.com/wodby/service-nextjs) |
 | [Composer package](https://github.com/wodby/php-package-boilerplate) | Generic | [`service-php`](https://github.com/wodby/service-php) |
 | [Python](https://github.com/wodby/python-boilerplate) | Generic | [`service-python`](https://github.com/wodby/service-python) |

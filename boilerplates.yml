@@ -90,6 +90,20 @@ boilerplates:
         ref:
           branch: main
 
+  - name: go
+    title: Go boilerplate
+    repository: wodby/go-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/images
+      mode: generic
+    services:
+      - repository: wodby/service-go
+        manifest: service.yml
+        template: go
+        ref:
+          branch: main
+
   - name: nextjs
     title: Next.js boilerplate
     repository: wodby/nextjs-boilerplate
