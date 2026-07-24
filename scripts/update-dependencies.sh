@@ -124,10 +124,17 @@ _assert_only_allowed_boilerplate_changes() {
 _boilerplate_run() {
   local image="${1}"
   local host_repo_dir="${2}"
+  local host_gid
+  local host_uid
   shift 2
 
+  host_uid=$(id -u)
+  host_gid=$(id -g)
+
   docker run --rm \
-    --user root \
+    --entrypoint "" \
+    --user "${host_uid}:${host_gid}" \
+    -e HOME=/tmp \
     -v "${host_repo_dir}:/workspace" \
     -w /workspace \
     "${image}" \
