@@ -141,6 +141,21 @@ _boilerplate_run() {
     "$@"
 }
 
+# Wodby Go images pin cache paths under /home/wodby, which is not writable
+# when the container runs as the GitHub runner's host UID.
+_boilerplate_run_go() {
+  local image="${1}"
+  local host_repo_dir="${2}"
+  shift 2
+
+  _boilerplate_run "${image}" "${host_repo_dir}" \
+    env \
+    GOCACHE=/tmp/go-build \
+    GOMODCACHE=/tmp/go/pkg/mod \
+    GOPATH=/tmp/go \
+    "$@"
+}
+
 _boilerplate_validation_tag() {
   local name="${1}"
   local image="${2}"
@@ -294,8 +309,8 @@ _update_go_boilerplate() {
   local update_image="${1}"
   local host_repo_dir="${2}"
 
-  _boilerplate_run "${update_image}" "${host_repo_dir}" go get -u ./...
-  _boilerplate_run "${update_image}" "${host_repo_dir}" go mod tidy
+  _boilerplate_run_go "${update_image}" "${host_repo_dir}" go get -u ./...
+  _boilerplate_run_go "${update_image}" "${host_repo_dir}" go mod tidy
 }
 
 _validate_go_boilerplate() {
@@ -307,9 +322,9 @@ _validate_go_boilerplate() {
   local image
 
   while IFS= read -r image; do
-    _boilerplate_run "${image}" "${host_repo_dir}" go mod verify
-    _boilerplate_run "${image}" "${host_repo_dir}" go test ./...
-    _boilerplate_run "${image}" "${host_repo_dir}" go vet ./...
+    _boilerplate_run_go "${image}" "${host_repo_dir}" go mod verify
+    _boilerplate_run_go "${image}" "${host_repo_dir}" go test ./...
+    _boilerplate_run_go "${image}" "${host_repo_dir}" go vet ./...
     _boilerplate_build "${name}" "${profile}" "${image}" "${repo_dir}"
   done < <(jq -r '.[]' <<<"${validation_images}")
 }
