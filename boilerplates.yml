@@ -28,7 +28,7 @@ boilerplates:
     repository: wodby/drupal-cms-template
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: specialized
     services:
       - repository: wodby/service-drupal-php
@@ -42,7 +42,7 @@ boilerplates:
     repository: wodby/drupal-vanilla
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: specialized
     services:
       - repository: wodby/service-drupal-php
@@ -289,7 +289,7 @@ boilerplates:
     repository: wodby/wordpress-vanilla
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: specialized
     services:
       - repository: wodby/service-wordpress-php

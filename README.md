@@ -8,12 +8,11 @@ make it available in the Wodby UI.
 service reference records the service repository, manifest path, template name,
 branch or tag constraint, and optional pipeline file.
 
-Generic Wodby-managed boilerplate dependency updates run from this repository.
-Their update and validation profiles live beside the service catalog in
-[`boilerplates.yml`](boilerplates.yml). Specialized upstream synchronization
-for Drupal and WordPress templates remains in
-[`wodby/images`](https://github.com/wodby/images). External upstream templates
-are cataloged because services expose them, but Wodby does not update their
+Wodby-managed boilerplate dependency updates run from this repository. Generic
+update and validation profiles and specialized Drupal and WordPress upstream
+synchronizers live beside the service catalog in
+[`boilerplates.yml`](boilerplates.yml). External upstream templates are
+cataloged because services expose them, but Wodby does not update their
 repositories.
 
 ## Wodby-managed boilerplates
@@ -39,7 +38,7 @@ repositories.
 
 | Template | Services | Reference |
 | --- | --- | --- |
-| [Laravel](https://github.com/laravel/laravel) | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | `^11` |
+| [Laravel](https://github.com/laravel/laravel) | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | `^13` |
 | [Matomo](https://github.com/matomo-org/matomo) | [`service-matomo`](https://github.com/wodby/service-matomo) | `^5` |
 
 ## Validation
@@ -59,9 +58,11 @@ python3 scripts/validate.py
 ## Dependency updates
 
 The scheduled update workflow refreshes compatible dependency lockfiles and
-accepts changes only to the files declared in `allowed_changes`. It validates
-each update against the oldest and newest supported Wodby runtime images before
-pushing directly to the boilerplate repository's default branch. Manifest
+accepts generic changes only to the files declared in `allowed_changes`. It
+validates each generic update against the oldest and newest supported Wodby
+runtime images before pushing directly to the boilerplate repository's default
+branch. Specialized jobs synchronize the Drupal 11, Drupal 10, Drupal 7, Drupal
+CMS 2, and WordPress templates with their upstream sources. Manifest
 constraints and major dependency lines remain manual.
 
 Run a single update locally without pushing:

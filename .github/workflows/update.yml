@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       boilerplates: ${{ steps.boilerplates.outputs.matrix }}
+      specialized: ${{ steps.specialized.outputs.matrix }}
     steps:
       - name: Check Out Repository
         uses: actions/checkout@v7
@@ -44,11 +45,16 @@ jobs:
       - name: Validate Updater
         run: |
           bash -n scripts/update-dependencies.sh
+          bash -n scripts/update-specialized.sh
           python3 -m unittest discover -s tests
 
       - name: Build Boilerplate Matrix
         id: boilerplates
         run: echo "matrix=$(python3 scripts/update_config.py matrix)" >> "${GITHUB_OUTPUT}"
+
+      - name: Build Specialized Boilerplate Matrix
+        id: specialized
+        run: echo "matrix=$(python3 scripts/update_config.py specialized-matrix)" >> "${GITHUB_OUTPUT}"
 
   update:
     needs: checks
@@ -91,11 +97,55 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+  specialized:
+    needs: checks
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        boilerplate: ${{ fromJSON(needs.checks.outputs.specialized) }}
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v7
+
+      - name: Log In to Docker Hub
+        if: env.DOCKER_USERNAME != '' && env.DOCKER_PASSWORD != ''
+        run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+
+      - name: Update Specialized Boilerplate
+        env:
+          BOILERPLATE_UPDATE_PUSH: ${{ github.event_name == 'pull_request' && '0' || '1' }}
+          BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
+        run: |
+          mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
+          : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -e BOILERPLATE_UPDATE_PUSH \
+            -e GITHUB_MACHINE_USER_API_TOKEN \
+            -e GITHUB_MACHINE_USER \
+            -e GIT_USER_EMAIL \
+            -e GIT_USER_NAME \
+            -e BOILERPLATE_UPDATE_REPORT_FILE="/boilerplates/${BOILERPLATE_UPDATE_REPORT_FILE}" \
+            -v "${PWD}:/boilerplates" \
+            wodby/docker:dev \
+            /boilerplates/scripts/update-specialized.sh "${{ matrix.boilerplate }}"
+
+      - name: Upload Update Report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: boilerplate-update-report-${{ matrix.boilerplate }}
+          path: boilerplate-update-reports/${{ matrix.boilerplate }}
+          if-no-files-found: warn
+          retention-days: 14
+
   notify:
     name: Notify Report Events
     needs:
       - checks
       - update
+      - specialized
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -140,5 +190,5 @@ jobs:
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             --event "${{ github.event_name }}" \
             --sha "${{ github.sha }}" \
-            --workflow-result "checks=${{ needs.checks.result }}, update=${{ needs.update.result }}" \
+            --workflow-result "checks=${{ needs.checks.result }}, update=${{ needs.update.result }}, specialized=${{ needs.specialized.result }}" \
             --artifact-result "${{ steps.download-reports.outcome }}"

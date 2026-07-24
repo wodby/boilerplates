@@ -22,7 +22,7 @@ SERVICE_REPO_RE = re.compile(
 )
 MANAGED_SERVICES_HEADING = "## Managed services"
 GENERIC_UPDATE_REPOSITORY = "wodby/boilerplates"
-SPECIALIZED_UPDATE_REPOSITORY = "wodby/images"
+SPECIALIZED_UPDATE_REPOSITORY = "wodby/boilerplates"
 DEPENDENCY_FILES = {
     "bundler": ["Gemfile.lock"],
     "composer": ["composer.lock"],

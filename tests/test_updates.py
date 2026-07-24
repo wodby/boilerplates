@@ -8,7 +8,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts.update_config import load_generic_updates
+from scripts.update_config import load_generic_updates, load_specialized_updates
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +28,12 @@ EXPECTED_BOILERPLATES = {
     "rails",
     "react",
     "ruby",
+}
+
+EXPECTED_SPECIALIZED_BOILERPLATES = {
+    "drupal-cms",
+    "drupal-vanilla",
+    "wordpress-vanilla",
 }
 
 EXPECTED_DEPENDENCY_FILES = {
@@ -56,6 +62,7 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def setUpClass(cls):
         cls.catalog = yaml.safe_load(CATALOG_PATH.read_text())
         cls.entries = load_generic_updates(CATALOG_PATH)
+        cls.specialized_entries = load_specialized_updates(CATALOG_PATH)
 
     def test_inventory_is_complete_and_unique(self):
         names = [entry["name"] for entry in self.entries]
@@ -84,13 +91,8 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
             updates = entry.get("dependency_updates")
             if not updates:
                 continue
-            expected_repository = (
-                "wodby/boilerplates"
-                if updates["mode"] == "generic"
-                else "wodby/images"
-            )
             with self.subTest(boilerplate=entry["name"]):
-                self.assertEqual(updates["repository"], expected_repository)
+                self.assertEqual(updates["repository"], "wodby/boilerplates")
 
     def test_workflow_matrix_comes_from_catalog(self):
         result = subprocess.run(
@@ -104,6 +106,25 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
         self.assertEqual(set(json.loads(result.stdout)), EXPECTED_BOILERPLATES)
         self.assertIn(
             "fromJSON(needs.checks.outputs.boilerplates)",
+            workflow,
+        )
+
+    def test_specialized_workflow_matrix_comes_from_catalog(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "update_config.py"), "specialized-matrix"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        workflow = WORKFLOW_PATH.read_text()
+
+        self.assertEqual(
+            {entry["name"] for entry in self.specialized_entries},
+            EXPECTED_SPECIALIZED_BOILERPLATES,
+        )
+        self.assertEqual(set(json.loads(result.stdout)), EXPECTED_SPECIALIZED_BOILERPLATES)
+        self.assertIn(
+            "fromJSON(needs.checks.outputs.specialized)",
             workflow,
         )
 
