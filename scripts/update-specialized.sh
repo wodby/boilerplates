@@ -56,11 +56,11 @@ _specialized_repo() {
 _ensure_git_identity() {
   local repo_dir="${1}"
 
-  if [[ -z "$(git -C "${repo_dir}" config --get user.email || true)" && -n "${GIT_USER_EMAIL:-}" ]]; then
-    git -C "${repo_dir}" config --local user.email "${GIT_USER_EMAIL}"
+  if [[ -z "$(git -C "${repo_dir}" config --get user.email || true)" && -n "${WODBOT_GIT_EMAIL:-}" ]]; then
+    git -C "${repo_dir}" config --local user.email "${WODBOT_GIT_EMAIL}"
   fi
-  if [[ -z "$(git -C "${repo_dir}" config --get user.name || true)" && -n "${GIT_USER_NAME:-}" ]]; then
-    git -C "${repo_dir}" config --local user.name "${GIT_USER_NAME}"
+  if [[ -z "$(git -C "${repo_dir}" config --get user.name || true)" && -n "${WODBOT_GIT_NAME:-}" ]]; then
+    git -C "${repo_dir}" config --local user.name "${WODBOT_GIT_NAME}"
   fi
 }
 
@@ -75,13 +75,13 @@ _set_push_origin() {
   local repo_dir="${1}"
   local slug="${2}"
 
-  if [[ -z "${GITHUB_MACHINE_USER:-}" || -z "${GITHUB_MACHINE_USER_API_TOKEN:-}" ]]; then
-    echo >&2 "GitHub machine credentials are required to push ${slug}"
+  if [[ -z "${WODBOT_GITHUB_USERNAME:-}" || -z "${WODBOT_GITHUB_PAT:-}" ]]; then
+    echo >&2 "WODBOT_GITHUB_USERNAME and WODBOT_GITHUB_PAT are required to push ${slug}"
     return 1
   fi
 
   git -C "${repo_dir}" remote set-url origin \
-    "https://${GITHUB_MACHINE_USER}:${GITHUB_MACHINE_USER_API_TOKEN}@github.com/${slug}"
+    "https://${WODBOT_GITHUB_USERNAME}:${WODBOT_GITHUB_PAT}@github.com/${slug}"
 }
 
 _commit_and_publish() {
