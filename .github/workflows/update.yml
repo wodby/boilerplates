@@ -90,3 +90,55 @@ jobs:
           path: boilerplate-update-reports/${{ matrix.boilerplate }}
           if-no-files-found: warn
           retention-days: 14
+
+  notify:
+    name: Notify Report Events
+    needs:
+      - checks
+      - update
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v7
+
+      - name: Download Report Artifacts
+        id: download-reports
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: boilerplate-update-report-*
+          path: reports
+
+      - name: Generate Boilerplate Update Report
+        run: |
+          python3 scripts/boilerplate_update_report.py \
+            --events-dir reports \
+            --output-dir boilerplate-update-report
+
+      - name: Upload Consolidated Report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: boilerplate-update-report
+          path: boilerplate-update-report
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Send Email Digest
+        env:
+          REPORT_EMAIL_TO: ${{ secrets.REPORT_EMAIL_TO }}
+          REPORT_EMAIL_FROM: ${{ secrets.REPORT_EMAIL_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SSL: ${{ secrets.SMTP_SSL }}
+          SMTP_STARTTLS: ${{ secrets.SMTP_STARTTLS }}
+        run: |
+          python3 scripts/boilerplate_report_email.py boilerplate-update-report \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --event "${{ github.event_name }}" \
+            --sha "${{ github.sha }}" \
+            --workflow-result "checks=${{ needs.checks.result }}, update=${{ needs.update.result }}" \
+            --artifact-result "${{ steps.download-reports.outcome }}"

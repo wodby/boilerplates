@@ -74,3 +74,16 @@ scripts/update-dependencies.sh rails
 Set `BOILERPLATE_UPDATE_PUSH=1` together with the Git machine-user credentials
 used by the workflow only when the validated update should be committed and
 pushed.
+
+The workflow uploads a consolidated JSON and Markdown report and sends an email
+digest only when dependency updates, failures, or report warnings are present.
+Configure the same repository secrets used by the Wodby services and images
+report workflows:
+
+- `REPORT_EMAIL_TO` (required; comma- or semicolon-separated recipients)
+- `REPORT_EMAIL_FROM` (required unless `SMTP_USERNAME` is the sender)
+- `SMTP_HOST` (required)
+- `SMTP_PORT` (optional; defaults to `587`)
+- `SMTP_USERNAME` and `SMTP_PASSWORD` (optional for relays without authentication)
+- `SMTP_SSL` (optional; defaults to disabled)
+- `SMTP_STARTTLS` (optional; defaults to enabled)
