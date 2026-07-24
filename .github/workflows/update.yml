@@ -40,7 +40,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install Dependencies
-        run: python3 -m pip install --upgrade pip pyyaml
+        run: python3 -m pip install --upgrade pip pyyaml requests
 
       - name: Validate Updater
         run: |
