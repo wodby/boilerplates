@@ -127,23 +127,32 @@ def actual_consumers(client: GitHubClient, repositories: list[str]) -> dict[tupl
                 raise CatalogError(f"{repository}:{manifest} was not found")
             service = load_yaml(manifest_text, f"{repository}:{manifest}")
             build = service.get("build") if isinstance(service.get("build"), dict) else {}
-            templates = build.get("templates") or []
-            if not isinstance(templates, list):
-                raise CatalogError(f"{repository}:{manifest} build.templates is not a list")
-            for template in templates:
-                if not isinstance(template, dict):
-                    raise CatalogError(f"{repository}:{manifest} contains a non-mapping build template")
-                name = str(template.get("name") or "").strip()
+            boilerplates = build.get("boilerplates")
+            legacy_templates = build.get("templates")
+            if boilerplates is not None and legacy_templates is not None:
+                raise CatalogError(
+                    f"{repository}:{manifest} defines both build.boilerplates "
+                    "and legacy build.templates"
+                )
+            field = "boilerplates" if boilerplates is not None else "templates"
+            boilerplates = boilerplates if boilerplates is not None else legacy_templates
+            boilerplates = boilerplates or []
+            if not isinstance(boilerplates, list):
+                raise CatalogError(f"{repository}:{manifest} build.{field} is not a list")
+            for boilerplate in boilerplates:
+                if not isinstance(boilerplate, dict):
+                    raise CatalogError(f"{repository}:{manifest} contains a non-mapping build boilerplate")
+                name = str(boilerplate.get("name") or "").strip()
                 if not name:
-                    raise CatalogError(f"{repository}:{manifest} contains a build template without a name")
+                    raise CatalogError(f"{repository}:{manifest} contains a build boilerplate without a name")
                 key = (repository, manifest, name)
                 if key in consumers:
-                    raise CatalogError(f"duplicate service template reference: {key}")
+                    raise CatalogError(f"duplicate service boilerplate reference: {key}")
                 consumers[key] = {
-                    "repository": parse_repository(template.get("repo")),
-                    "branch": str(template.get("branch") or "") or None,
-                    "tag": str(template.get("tag") or "") or None,
-                    "pipeline": str(template.get("pipeline") or "") or None,
+                    "repository": parse_repository(boilerplate.get("repo")),
+                    "branch": str(boilerplate.get("branch") or "") or None,
+                    "tag": str(boilerplate.get("tag") or "") or None,
+                    "pipeline": str(boilerplate.get("pipeline") or "") or None,
                 }
     return consumers
 
@@ -233,17 +242,20 @@ def catalog_consumers(catalog: dict[str, Any]) -> tuple[list[dict[str, Any]], di
                 raise CatalogError(f"boilerplate {name!r} has a non-mapping service consumer")
             service_repository = parse_repository(service.get("repository"))
             manifest = str(service.get("manifest") or "").strip()
-            template = str(service.get("template") or "").strip()
-            if not manifest or not template:
+            boilerplate_name = str(service.get("boilerplate") or "").strip()
+            if not manifest or not boilerplate_name:
                 raise CatalogError(f"boilerplate {name!r} has an incomplete service consumer")
             ref = service.get("ref") if isinstance(service.get("ref"), dict) else {}
             branch = str(ref.get("branch") or "") or None
             tag = str(ref.get("tag") or "") or None
             if bool(branch) == bool(tag):
-                raise CatalogError(f"{service_repository}:{manifest}:{template} must define exactly one branch or tag")
-            key = (service_repository, manifest, template)
+                raise CatalogError(
+                    f"{service_repository}:{manifest}:{boilerplate_name} "
+                    "must define exactly one branch or tag"
+                )
+            key = (service_repository, manifest, boilerplate_name)
             if key in consumers:
-                raise CatalogError(f"duplicate catalog service template reference: {key}")
+                raise CatalogError(f"duplicate catalog service boilerplate reference: {key}")
             consumers[key] = {
                 "repositories": accepted_repositories,
                 "branch": branch,
@@ -263,7 +275,7 @@ def validate(catalog_path: Path, services_repository: str) -> list[str]:
 
     errors: list[str] = []
     for key in sorted(actual.keys() - expected.keys()):
-        errors.append(f"service template is missing from catalog: {':'.join(key)}")
+        errors.append(f"service boilerplate is missing from catalog: {':'.join(key)}")
     for key in sorted(expected.keys() - actual.keys()):
         errors.append(f"catalog consumer is not present in service manifests: {':'.join(key)}")
     for key in sorted(actual.keys() & expected.keys()):

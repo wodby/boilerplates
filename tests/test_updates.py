@@ -9,6 +9,7 @@ from pathlib import Path
 import yaml
 
 from scripts.update_config import load_generic_updates, load_specialized_updates
+from scripts.validate import CatalogError, actual_consumers, catalog_consumers
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -93,6 +94,15 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
                 continue
             with self.subTest(boilerplate=entry["name"]):
                 self.assertEqual(updates["repository"], "wodby/boilerplates")
+
+    def test_service_consumers_use_canonical_boilerplate_key(self):
+        _, consumers = catalog_consumers(self.catalog)
+
+        self.assertEqual(len(consumers), 18)
+        for entry in self.catalog["boilerplates"]:
+            for service in entry["services"]:
+                self.assertIn("boilerplate", service)
+                self.assertNotIn("template", service)
 
     def test_workflow_matrix_comes_from_catalog(self):
         result = subprocess.run(
@@ -181,6 +191,60 @@ class AllowedChangesTest(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("unexpected file", result.stderr)
+
+
+class ServiceManifestConsumerTest(unittest.TestCase):
+    class FakeClient:
+        def __init__(self, build: dict):
+            self.build = build
+
+        def get_file(self, repository: str, path: str) -> str | None:
+            if repository == "wodby/service-demo" and path == "service.yml":
+                return yaml.safe_dump({"name": "demo", "build": self.build})
+            return None
+
+    def test_reads_canonical_boilerplates(self):
+        consumers = actual_consumers(
+            self.FakeClient(
+                {
+                    "boilerplates": [
+                        {
+                            "name": "demo",
+                            "repo": "https://github.com/wodby/demo-boilerplate",
+                            "branch": "main",
+                        }
+                    ]
+                }
+            ),
+            ["wodby/service-demo"],
+        )
+
+        self.assertIn(("wodby/service-demo", "service.yml", "demo"), consumers)
+
+    def test_reads_legacy_templates_during_rollout(self):
+        consumers = actual_consumers(
+            self.FakeClient(
+                {
+                    "templates": [
+                        {
+                            "name": "demo",
+                            "repo": "https://github.com/wodby/demo-boilerplate",
+                            "branch": "main",
+                        }
+                    ]
+                }
+            ),
+            ["wodby/service-demo"],
+        )
+
+        self.assertIn(("wodby/service-demo", "service.yml", "demo"), consumers)
+
+    def test_rejects_canonical_and_legacy_fields_together(self):
+        with self.assertRaisesRegex(CatalogError, "defines both"):
+            actual_consumers(
+                self.FakeClient({"boilerplates": [], "templates": []}),
+                ["wodby/service-demo"],
+            )
 
 
 if __name__ == "__main__":

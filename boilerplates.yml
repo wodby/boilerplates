@@ -19,7 +19,7 @@ boilerplates:
     services:
       - repository: wodby/service-django
         manifest: service.yml
-        template: django
+        boilerplate: django
         ref:
           branch: main
 
@@ -33,7 +33,7 @@ boilerplates:
     services:
       - repository: wodby/service-drupal-php
         manifest: 11/service.yml
-        template: cms
+        boilerplate: cms
         ref:
           branch: main
 
@@ -47,12 +47,12 @@ boilerplates:
     services:
       - repository: wodby/service-drupal-php
         manifest: 11/service.yml
-        template: vanilla
+        boilerplate: vanilla
         ref:
           branch: 11.x
       - repository: wodby/service-drupal-php
         manifest: 10/service.yml
-        template: vanilla
+        boilerplate: vanilla
         ref:
           branch: 10.x
 
@@ -74,7 +74,7 @@ boilerplates:
     services:
       - repository: wodby/service-node
         manifest: service.yml
-        template: expressjs
+        boilerplate: expressjs
         ref:
           branch: main
 
@@ -96,7 +96,7 @@ boilerplates:
     services:
       - repository: wodby/service-fastapi
         manifest: service.yml
-        template: fastapi
+        boilerplate: fastapi
         ref:
           branch: main
 
@@ -118,7 +118,7 @@ boilerplates:
     services:
       - repository: wodby/service-flask
         manifest: service.yml
-        template: flask
+        boilerplate: flask
         ref:
           branch: main
 
@@ -141,7 +141,7 @@ boilerplates:
     services:
       - repository: wodby/service-go
         manifest: service.yml
-        template: go
+        boilerplate: go
         ref:
           branch: main
 
@@ -165,12 +165,12 @@ boilerplates:
     services:
       - repository: wodby/service-httpd
         manifest: service.yml
-        template: nextjs
+        boilerplate: nextjs
         ref:
           branch: main
       - repository: wodby/service-nextjs
         manifest: service.yml
-        template: nextjs
+        boilerplate: nextjs
         ref:
           branch: main
 
@@ -192,7 +192,7 @@ boilerplates:
     services:
       - repository: wodby/service-php
         manifest: service.yml
-        template: composer
+        boilerplate: composer
         ref:
           branch: master
 
@@ -214,7 +214,7 @@ boilerplates:
     services:
       - repository: wodby/service-python
         manifest: service.yml
-        template: python
+        boilerplate: python
         ref:
           branch: main
 
@@ -236,7 +236,7 @@ boilerplates:
     services:
       - repository: wodby/service-rails
         manifest: service.yml
-        template: rails
+        boilerplate: rails
         ref:
           branch: main
 
@@ -258,7 +258,7 @@ boilerplates:
     services:
       - repository: wodby/service-nginx
         manifest: service.yml
-        template: react
+        boilerplate: react
         ref:
           branch: main
 
@@ -280,7 +280,7 @@ boilerplates:
     services:
       - repository: wodby/service-ruby
         manifest: service.yml
-        template: ruby
+        boilerplate: ruby
         ref:
           branch: main
 
@@ -294,7 +294,7 @@ boilerplates:
     services:
       - repository: wodby/service-wordpress-php
         manifest: service.yml
-        template: vanilla
+        boilerplate: vanilla
         ref:
           branch: main
 
@@ -305,7 +305,7 @@ boilerplates:
     services:
       - repository: wodby/service-laravel-php
         manifest: service.yml
-        template: boilerplate
+        boilerplate: boilerplate
         ref:
           tag: ^13
         pipeline: pipeline.yml
@@ -317,7 +317,7 @@ boilerplates:
     services:
       - repository: wodby/service-matomo
         manifest: service.yml
-        template: vanilla
+        boilerplate: vanilla
         ref:
           tag: ^5
         pipeline: pipeline.yml

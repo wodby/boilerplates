@@ -27,14 +27,14 @@ the new repository is yours to customize and develop normally.
 | [Ruby](https://github.com/wodby/ruby-boilerplate) | General Ruby applications | [`service-ruby`](https://github.com/wodby/service-ruby) | [`stack-ruby`](https://github.com/wodby/stack-ruby) |
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
 
-## Upstream templates
+## Upstream boilerplates
 
 Wodby also supports starter projects maintained by their upstream communities:
 
-| Template | Best for | Wodby service | Wodby stack |
+| Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
 | [Laravel](https://github.com/laravel/laravel) | PHP applications built with Laravel | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | [`stack-laravel`](https://github.com/wodby/stack-laravel) |
 | [Matomo](https://github.com/matomo-org/matomo) | Self-hosted Matomo analytics projects | [`service-matomo`](https://github.com/wodby/service-matomo) | [`stack-matomo`](https://github.com/wodby/stack-matomo) |
 
-The templates available to you depend on the service selected for your
+The boilerplates available to you depend on the service selected for your
 application. Learn more in the [Wodby CI/CD documentation](https://wodby.com/docs/2.0/cicd/).
