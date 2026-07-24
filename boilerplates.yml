@@ -307,7 +307,7 @@ boilerplates:
         manifest: service.yml
         template: boilerplate
         ref:
-          tag: ^11
+          tag: ^13
         pipeline: pipeline.yml
 
   - name: matomo
