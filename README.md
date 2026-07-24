@@ -8,11 +8,13 @@ make it available in the Wodby UI.
 service reference records the service repository, manifest path, template name,
 branch or tag constraint, and optional pipeline file.
 
-Wodby-managed boilerplate dependency updates run from
-[`wodby/images`](https://github.com/wodby/images). Generic entries share the
-declarative dependency updater; specialized entries have dedicated update
-jobs. External upstream templates are cataloged because services expose them,
-but Wodby does not update their repositories.
+Generic Wodby-managed boilerplate dependency updates run from this repository.
+Their update and validation profiles live beside the service catalog in
+[`boilerplates.yml`](boilerplates.yml). Specialized upstream synchronization
+for Drupal and WordPress templates remains in
+[`wodby/images`](https://github.com/wodby/images). External upstream templates
+are cataloged because services expose them, but Wodby does not update their
+repositories.
 
 ## Wodby-managed boilerplates
 
@@ -50,6 +52,25 @@ consumer remains, or when repository, ref, or pipeline metadata differs.
 Run it locally with:
 
 ```bash
-python -m pip install pyyaml requests
-python scripts/validate.py
+python3 -m pip install pyyaml requests
+python3 scripts/validate.py
 ```
+
+## Dependency updates
+
+The scheduled update workflow refreshes compatible dependency lockfiles and
+accepts changes only to the files declared in `allowed_changes`. It validates
+each update against the oldest and newest supported Wodby runtime images before
+pushing directly to the boilerplate repository's default branch. Manifest
+constraints and major dependency lines remain manual.
+
+Run a single update locally without pushing:
+
+```bash
+python3 -m pip install pyyaml
+scripts/update-dependencies.sh rails
+```
+
+Set `BOILERPLATE_UPDATE_PUSH=1` together with the Git machine-user credentials
+used by the workflow only when the validated update should be committed and
+pushed.

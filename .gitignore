@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+.boilerplate-work/
+boilerplate-update-reports/

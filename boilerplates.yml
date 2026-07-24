@@ -6,8 +6,16 @@ boilerplates:
     repository: wodby/django-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: uv
+      profile: django
+      update_image: wodby/python:3.14
+      validation_images:
+        - wodby/python:3.10
+        - wodby/python:3.14
+      allowed_changes:
+        - uv.lock
     services:
       - repository: wodby/service-django
         manifest: service.yml
@@ -53,8 +61,16 @@ boilerplates:
     repository: wodby/expressjs-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: npm
+      profile: expressjs
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
     services:
       - repository: wodby/service-node
         manifest: service.yml
@@ -67,8 +83,16 @@ boilerplates:
     repository: wodby/fastapi-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: uv
+      profile: pytest
+      update_image: wodby/python:3.14
+      validation_images:
+        - wodby/python:3.10
+        - wodby/python:3.14
+      allowed_changes:
+        - uv.lock
     services:
       - repository: wodby/service-fastapi
         manifest: service.yml
@@ -81,8 +105,16 @@ boilerplates:
     repository: wodby/flask-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: uv
+      profile: pytest
+      update_image: wodby/python:3.14
+      validation_images:
+        - wodby/python:3.10
+        - wodby/python:3.14
+      allowed_changes:
+        - uv.lock
     services:
       - repository: wodby/service-flask
         manifest: service.yml
@@ -95,8 +127,17 @@ boilerplates:
     repository: wodby/go-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: go
+      profile: go
+      update_image: wodby/go:1.26
+      validation_images:
+        - wodby/go:1.25
+        - wodby/go:1.26
+      allowed_changes:
+        - go.mod
+        - go.sum
     services:
       - repository: wodby/service-go
         manifest: service.yml
@@ -111,8 +152,16 @@ boilerplates:
       - wodby/nextjs
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
     services:
       - repository: wodby/service-httpd
         manifest: service.yml
@@ -130,8 +179,16 @@ boilerplates:
     repository: wodby/php-package-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: composer
+      profile: phpunit
+      update_image: wodby/php:8.5
+      validation_images:
+        - wodby/php:8.3
+        - wodby/php:8.5
+      allowed_changes:
+        - composer.lock
     services:
       - repository: wodby/service-php
         manifest: service.yml
@@ -144,8 +201,16 @@ boilerplates:
     repository: wodby/python-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: uv
+      profile: python
+      update_image: wodby/python:3.14
+      validation_images:
+        - wodby/python:3.10
+        - wodby/python:3.14
+      allowed_changes:
+        - uv.lock
     services:
       - repository: wodby/service-python
         manifest: service.yml
@@ -158,8 +223,16 @@ boilerplates:
     repository: wodby/rails-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: bundler
+      profile: rails
+      update_image: wodby/ruby:4.0
+      validation_images:
+        - wodby/ruby:3.3
+        - wodby/ruby:4.0
+      allowed_changes:
+        - Gemfile.lock
     services:
       - repository: wodby/service-rails
         manifest: service.yml
@@ -172,8 +245,16 @@ boilerplates:
     repository: wodby/react-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
     services:
       - repository: wodby/service-nginx
         manifest: service.yml
@@ -186,8 +267,16 @@ boilerplates:
     repository: wodby/ruby-boilerplate
     managed: true
     dependency_updates:
-      repository: wodby/images
+      repository: wodby/boilerplates
       mode: generic
+      ecosystem: bundler
+      profile: ruby
+      update_image: wodby/ruby:4.0
+      validation_images:
+        - wodby/ruby:3.3
+        - wodby/ruby:4.0
+      allowed_changes:
+        - Gemfile.lock
     services:
       - repository: wodby/service-ruby
         manifest: service.yml

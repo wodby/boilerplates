@@ -1,0 +1,92 @@
+name: Update Boilerplate Dependencies
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: boilerplate-dependency-updates
+  cancel-in-progress: false
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  GITHUB_MACHINE_USER_API_TOKEN: ${{ secrets.GIT_GITHUB_MACHINE_USER_API_TOKEN }}
+  GITHUB_MACHINE_USER: ${{ secrets.GIT_GITHUB_MACHINE_USER }}
+  GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+  GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    outputs:
+      boilerplates: ${{ steps.boilerplates.outputs.matrix }}
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v7
+
+      - name: Set Up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: python3 -m pip install --upgrade pip pyyaml
+
+      - name: Validate Updater
+        run: |
+          bash -n scripts/update-dependencies.sh
+          python3 -m unittest discover -s tests
+
+      - name: Build Boilerplate Matrix
+        id: boilerplates
+        run: echo "matrix=$(python3 scripts/update_config.py matrix)" >> "${GITHUB_OUTPUT}"
+
+  update:
+    needs: checks
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        boilerplate: ${{ fromJSON(needs.checks.outputs.boilerplates) }}
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v7
+
+      - name: Set Up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: python3 -m pip install --upgrade pip pyyaml
+
+      - name: Log In to Docker Hub
+        if: env.DOCKER_USERNAME != '' && env.DOCKER_PASSWORD != ''
+        run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+
+      - name: Update and Validate Dependencies
+        env:
+          BOILERPLATE_UPDATE_PUSH: ${{ github.event_name == 'pull_request' && '0' || '1' }}
+          BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
+        run: |
+          mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
+          : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
+          scripts/update-dependencies.sh "${{ matrix.boilerplate }}"
+
+      - name: Upload Update Report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: boilerplate-update-report-${{ matrix.boilerplate }}
+          path: boilerplate-update-reports/${{ matrix.boilerplate }}
+          if-no-files-found: warn
+          retention-days: 14
