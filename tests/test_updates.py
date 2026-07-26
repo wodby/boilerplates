@@ -23,6 +23,7 @@ EXPECTED_BOILERPLATES = {
     "fastapi",
     "flask",
     "go",
+    "laravel",
     "nextjs",
     "php-package",
     "python",

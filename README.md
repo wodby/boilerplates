@@ -19,6 +19,7 @@ the new repository is yours to customize and develop normally.
 | [FastAPI](https://github.com/wodby/fastapi-boilerplate) | Python APIs built with FastAPI | [`service-fastapi`](https://github.com/wodby/service-fastapi) | [`stack-fastapi`](https://github.com/wodby/stack-fastapi) |
 | [Flask](https://github.com/wodby/flask-boilerplate) | Python web applications built with Flask | [`service-flask`](https://github.com/wodby/service-flask) | [`stack-flask`](https://github.com/wodby/stack-flask) |
 | [Go](https://github.com/wodby/go-boilerplate) | Go web applications and APIs | [`service-go`](https://github.com/wodby/service-go) | [`stack-go`](https://github.com/wodby/stack-go) |
+| [Laravel](https://github.com/wodby/laravel-boilerplate) | PHP applications built with Laravel | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | [`stack-laravel`](https://github.com/wodby/stack-laravel) |
 | [Next.js](https://github.com/wodby/nextjs-boilerplate) | Full-stack React applications built with Next.js | [`service-nextjs`](https://github.com/wodby/service-nextjs), [`service-httpd`](https://github.com/wodby/service-httpd) | [`stack-nextjs`](https://github.com/wodby/stack-nextjs) |
 | [Composer package](https://github.com/wodby/php-package-boilerplate) | PHP packages managed with Composer | [`service-php`](https://github.com/wodby/service-php) | [`stack-php`](https://github.com/wodby/stack-php) |
 | [Python](https://github.com/wodby/python-boilerplate) | General Python applications | [`service-python`](https://github.com/wodby/service-python) | [`stack-python`](https://github.com/wodby/stack-python) |
@@ -33,7 +34,6 @@ Wodby also supports starter projects maintained by their upstream communities:
 
 | Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
-| [Laravel](https://github.com/laravel/laravel) | PHP applications built with Laravel | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | [`stack-laravel`](https://github.com/wodby/stack-laravel) |
 | [Matomo](https://github.com/matomo-org/matomo) | Self-hosted Matomo analytics projects | [`service-matomo`](https://github.com/wodby/service-matomo) | [`stack-matomo`](https://github.com/wodby/stack-matomo) |
 
 The boilerplates available to you depend on the service selected for your

@@ -145,6 +145,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: laravel
+    title: Laravel boilerplate
+    repository: wodby/laravel-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: composer
+      profile: phpunit
+      update_image: wodby/php:8.3
+      validation_images:
+        - wodby/php:8.3
+        - wodby/php:8.5
+      allowed_changes:
+        - composer.lock
+    services:
+      - repository: wodby/service-laravel-php
+        manifest: service.yml
+        boilerplate: boilerplate
+        ref:
+          branch: main
+
   - name: nextjs
     title: Next.js boilerplate
     repository: wodby/nextjs-boilerplate
@@ -297,18 +319,6 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
-
-  - name: laravel
-    title: Laravel boilerplate
-    repository: laravel/laravel
-    managed: false
-    services:
-      - repository: wodby/service-laravel-php
-        manifest: service.yml
-        boilerplate: boilerplate
-        ref:
-          tag: ^13
-        pipeline: pipeline.yml
 
   - name: matomo
     title: Vanilla Matomo
