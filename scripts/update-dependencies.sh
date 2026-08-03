@@ -222,8 +222,12 @@ _validate_uv_boilerplate() {
 
     case "${profile}" in
       django)
-        _boilerplate_run "${image}" "${host_repo_dir}" uv run python manage.py check
-        _boilerplate_run "${image}" "${host_repo_dir}" uv run python manage.py test
+        _boilerplate_run "${image}" "${host_repo_dir}" \
+          env DJANGO_SECRET_KEY=boilerplate-validation-only \
+          uv run python manage.py check
+        _boilerplate_run "${image}" "${host_repo_dir}" \
+          env DJANGO_SECRET_KEY=boilerplate-validation-only \
+          uv run python manage.py test
         ;;
       pytest|python)
         _boilerplate_run "${image}" "${host_repo_dir}" uv run pytest
@@ -294,15 +298,22 @@ _update_composer_boilerplate() {
 }
 
 _validate_composer_boilerplate() {
-  local host_repo_dir="${1}"
-  local validation_images="${2}"
+  local name="${1}"
+  local host_repo_dir="${2}"
+  local validation_images="${3}"
   local image
 
   while IFS= read -r image; do
     _boilerplate_run "${image}" "${host_repo_dir}" \
       composer install --no-interaction --no-ansi
-    _boilerplate_run "${image}" "${host_repo_dir}" \
-      vendor/bin/phpunit --do-not-cache-result
+    if [[ "${name}" == "laravel" ]]; then
+      _boilerplate_run "${image}" "${host_repo_dir}" \
+        env APP_KEY=boilerplatevalidationkey00000000 \
+        vendor/bin/phpunit --do-not-cache-result
+    else
+      _boilerplate_run "${image}" "${host_repo_dir}" \
+        vendor/bin/phpunit --do-not-cache-result
+    fi
   done < <(jq -r '.[]' <<<"${validation_images}")
 }
 
@@ -436,7 +447,8 @@ update_boilerplate_dependencies() (
         "${validation_images}"
       ;;
     composer)
-      _validate_composer_boilerplate "${host_repo_dir}" "${validation_images}"
+      _validate_composer_boilerplate "${name}" "${host_repo_dir}" \
+        "${validation_images}"
       ;;
     go)
       _validate_go_boilerplate "${name}" "${profile}" "${repo_dir}" \

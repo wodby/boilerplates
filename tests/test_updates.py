@@ -194,6 +194,71 @@ class AllowedChangesTest(unittest.TestCase):
         self.assertIn("unexpected file", result.stderr)
 
 
+class ValidationEnvironmentTest(unittest.TestCase):
+    def run_validation(self, command: str) -> subprocess.CompletedProcess:
+        script = f'''
+. "{UPDATER_PATH}"
+_boilerplate_run() {{
+    printf '%s\\n' "$*"
+}}
+_boilerplate_build() {{
+    :
+}}
+{command}
+'''
+        return subprocess.run(
+            ["bash", "-c", script],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    def test_django_validation_supplies_secret_without_enabling_debug(self):
+        result = self.run_validation(
+            "_validate_uv_boilerplate django django /tmp/repo /tmp/repo "
+            "'[\"wodby/python:test\"]'"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(
+            "env DJANGO_SECRET_KEY=boilerplate-validation-only "
+            "uv run python manage.py check",
+            result.stdout,
+        )
+        self.assertIn(
+            "env DJANGO_SECRET_KEY=boilerplate-validation-only "
+            "uv run python manage.py test",
+            result.stdout,
+        )
+        self.assertNotIn("DJANGO_DEBUG", result.stdout)
+
+    def test_laravel_validation_supplies_application_key(self):
+        result = self.run_validation(
+            "_validate_composer_boilerplate laravel /tmp/repo "
+            "'[\"wodby/php:test\"]'"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(
+            "env APP_KEY=boilerplatevalidationkey00000000 "
+            "vendor/bin/phpunit --do-not-cache-result",
+            result.stdout,
+        )
+
+    def test_plain_phpunit_validation_does_not_receive_laravel_key(self):
+        result = self.run_validation(
+            "_validate_composer_boilerplate php-package /tmp/repo "
+            "'[\"wodby/php:test\"]'"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("APP_KEY", result.stdout)
+        self.assertIn(
+            "vendor/bin/phpunit --do-not-cache-result",
+            result.stdout,
+        )
+
+
 class ServiceManifestConsumerTest(unittest.TestCase):
     class FakeClient:
         def __init__(self, build: dict):
