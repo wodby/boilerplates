@@ -26,6 +26,7 @@ the new repository is yours to customize and develop normally.
 | [Rails](https://github.com/wodby/rails-boilerplate) | Ruby applications built with Rails | [`service-rails`](https://github.com/wodby/service-rails) | [`stack-rails`](https://github.com/wodby/stack-rails) |
 | [React](https://github.com/wodby/react-boilerplate) | Client-side React applications | [`service-nginx`](https://github.com/wodby/service-nginx) | [`stack-html`](https://github.com/wodby/stack-html) |
 | [Ruby](https://github.com/wodby/ruby-boilerplate) | General Ruby applications | [`service-ruby`](https://github.com/wodby/service-ruby) | [`stack-ruby`](https://github.com/wodby/stack-ruby) |
+| [Slack Inviter](https://github.com/wodby/slack-inviter) | Invitation pages for existing Slack communities | [`service-slack-inviter`](https://github.com/wodby/service-slack-inviter) | [`stack-slack-inviter`](https://github.com/wodby/stack-slack-inviter) |
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
 
 ## Upstream boilerplates

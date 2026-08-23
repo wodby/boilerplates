@@ -262,6 +262,10 @@ _validate_npm_boilerplate() {
         _boilerplate_run "${image}" "${host_repo_dir}" node --check server.js
         _boilerplate_build "${name}" "${profile}" "${image}" "${repo_dir}"
         ;;
+      node-check)
+        _boilerplate_run "${image}" "${host_repo_dir}" npm run check
+        _boilerplate_build "${name}" "${profile}" "${image}" "${repo_dir}"
+        ;;
       npm-build)
         _boilerplate_run "${image}" "${host_repo_dir}" npm run build
         ;;
