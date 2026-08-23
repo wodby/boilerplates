@@ -30,6 +30,7 @@ EXPECTED_BOILERPLATES = {
     "rails",
     "react",
     "ruby",
+    "slack-inviter",
 }
 
 EXPECTED_SPECIALIZED_BOILERPLATES = {
@@ -50,6 +51,7 @@ EXPECTED_PROFILES = {
     "django",
     "expressjs",
     "go",
+    "node-check",
     "npm-build",
     "phpunit",
     "pytest",
@@ -75,10 +77,10 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def test_entries_use_supported_profiles_and_dependency_files(self):
         for entry in self.entries:
             with self.subTest(boilerplate=entry["name"]):
-                self.assertEqual(
-                    entry["repo"],
-                    f"wodby/{entry['name']}-boilerplate",
-                )
+                expected_repository = {
+                    "slack-inviter": "wodby/slack-inviter",
+                }.get(entry["name"], f"wodby/{entry['name']}-boilerplate")
+                self.assertEqual(entry["repo"], expected_repository)
                 self.assertIn(entry["ecosystem"], EXPECTED_DEPENDENCY_FILES)
                 self.assertIn(entry["profile"], EXPECTED_PROFILES)
                 self.assertEqual(
@@ -99,7 +101,7 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def test_service_consumers_use_canonical_boilerplate_key(self):
         _, consumers = catalog_consumers(self.catalog)
 
-        self.assertEqual(len(consumers), 18)
+        self.assertEqual(len(consumers), 19)
         for entry in self.catalog["boilerplates"]:
             for service in entry["services"]:
                 self.assertIn("boilerplate", service)
@@ -202,7 +204,7 @@ _boilerplate_run() {{
     printf '%s\\n' "$*"
 }}
 _boilerplate_build() {{
-    :
+    printf 'build %s\n' "$*"
 }}
 {command}
 '''
@@ -257,6 +259,16 @@ _boilerplate_build() {{
             "vendor/bin/phpunit --do-not-cache-result",
             result.stdout,
         )
+
+    def test_node_check_validation_runs_checks_for_each_image(self):
+        result = self.run_validation(
+            "_validate_npm_boilerplate slack-inviter node-check /tmp/repo "
+            "/tmp/repo '[\"wodby/node:22\",\"wodby/node:26\"]'"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.count("npm run check"), 2)
+        self.assertEqual(result.stdout.count("build slack-inviter node-check"), 2)
 
 
 class ServiceManifestConsumerTest(unittest.TestCase):

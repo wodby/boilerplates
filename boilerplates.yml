@@ -306,6 +306,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: slack-inviter
+    title: Slack Inviter
+    repository: wodby/slack-inviter
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: node-check
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-slack-inviter
+        manifest: service.yml
+        boilerplate: slack-inviter
+        ref:
+          tag: 1.0.1
+
   - name: wordpress-vanilla
     title: Vanilla WordPress
     repository: wodby/wordpress-vanilla

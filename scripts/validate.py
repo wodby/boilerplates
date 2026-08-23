@@ -34,6 +34,7 @@ UPDATE_PROFILES = {
     "django",
     "expressjs",
     "go",
+    "node-check",
     "npm-build",
     "phpunit",
     "pytest",
