@@ -80,8 +80,8 @@ jobs:
           BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
           WODBOT_GITHUB_PAT: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_PAT || '' }}
           WODBOT_GITHUB_USERNAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_USERNAME || '' }}
-          WODBOT_GIT_EMAIL: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_EMAIL || '' }}
-          WODBOT_GIT_NAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_NAME || '' }}
+          WODBOT_GIT_EMAIL: ${{ github.event_name == 'pull_request' && 'ci@wodby.invalid' || secrets.WODBOT_GIT_EMAIL }}
+          WODBOT_GIT_NAME: ${{ github.event_name == 'pull_request' && 'Wodby CI' || secrets.WODBOT_GIT_NAME }}
         run: |
           mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
           : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
@@ -124,8 +124,8 @@ jobs:
           BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
           WODBOT_GITHUB_PAT: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_PAT || '' }}
           WODBOT_GITHUB_USERNAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_USERNAME || '' }}
-          WODBOT_GIT_EMAIL: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_EMAIL || '' }}
-          WODBOT_GIT_NAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_NAME || '' }}
+          WODBOT_GIT_EMAIL: ${{ github.event_name == 'pull_request' && 'ci@wodby.invalid' || secrets.WODBOT_GIT_EMAIL }}
+          WODBOT_GIT_NAME: ${{ github.event_name == 'pull_request' && 'Wodby CI' || secrets.WODBOT_GIT_NAME }}
         run: |
           mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
           : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
