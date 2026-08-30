@@ -16,14 +16,6 @@ concurrency:
   group: boilerplate-dependency-updates
   cancel-in-progress: false
 
-env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  WODBOT_GITHUB_PAT: ${{ secrets.WODBOT_GITHUB_PAT }}
-  WODBOT_GITHUB_USERNAME: ${{ secrets.WODBOT_GITHUB_USERNAME }}
-  WODBOT_GIT_EMAIL: ${{ secrets.WODBOT_GIT_EMAIL }}
-  WODBOT_GIT_NAME: ${{ secrets.WODBOT_GIT_NAME }}
-
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -76,17 +68,28 @@ jobs:
         run: python3 -m pip install --upgrade pip pyyaml
 
       - name: Log In to Docker Hub
-        if: env.DOCKER_USERNAME != '' && env.DOCKER_PASSWORD != ''
-        run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+        if: github.event_name != 'pull_request'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: printf '%s' "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 
       - name: Update and Validate Dependencies
         env:
           BOILERPLATE_UPDATE_PUSH: ${{ github.event_name == 'pull_request' && '0' || '1' }}
           BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
+          WODBOT_GITHUB_PAT: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_PAT || '' }}
+          WODBOT_GITHUB_USERNAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_USERNAME || '' }}
+          WODBOT_GIT_EMAIL: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_EMAIL || '' }}
+          WODBOT_GIT_NAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_NAME || '' }}
         run: |
           mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
           : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
           scripts/update-dependencies.sh "${{ matrix.boilerplate }}"
+
+      - name: Log Out of Docker Hub
+        if: always() && github.event_name != 'pull_request'
+        run: docker logout || true
 
       - name: Upload Update Report
         if: always()
@@ -109,13 +112,20 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Log In to Docker Hub
-        if: env.DOCKER_USERNAME != '' && env.DOCKER_PASSWORD != ''
-        run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+        if: github.event_name != 'pull_request'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: printf '%s' "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 
       - name: Update Specialized Boilerplate
         env:
           BOILERPLATE_UPDATE_PUSH: ${{ github.event_name == 'pull_request' && '0' || '1' }}
           BOILERPLATE_UPDATE_REPORT_FILE: boilerplate-update-reports/${{ matrix.boilerplate }}/events.jsonl
+          WODBOT_GITHUB_PAT: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_PAT || '' }}
+          WODBOT_GITHUB_USERNAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GITHUB_USERNAME || '' }}
+          WODBOT_GIT_EMAIL: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_EMAIL || '' }}
+          WODBOT_GIT_NAME: ${{ github.event_name != 'pull_request' && secrets.WODBOT_GIT_NAME || '' }}
         run: |
           mkdir -p "$(dirname "${BOILERPLATE_UPDATE_REPORT_FILE}")"
           : > "${BOILERPLATE_UPDATE_REPORT_FILE}"
@@ -128,8 +138,12 @@ jobs:
             -e WODBOT_GIT_NAME \
             -e BOILERPLATE_UPDATE_REPORT_FILE="/boilerplates/${BOILERPLATE_UPDATE_REPORT_FILE}" \
             -v "${PWD}:/boilerplates" \
-            wodby/docker:dev \
+            wodby/docker:dev@sha256:733230bc461c3a4173fea8fe835bc58bf9698fc58c701510d10edc6b9c1af09b \
             /boilerplates/scripts/update-specialized.sh "${{ matrix.boilerplate }}"
+
+      - name: Log Out of Docker Hub
+        if: always() && github.event_name != 'pull_request'
+        run: docker logout || true
 
       - name: Upload Update Report
         if: always()
@@ -176,6 +190,7 @@ jobs:
           retention-days: 14
 
       - name: Send Email Digest
+        if: github.event_name != 'pull_request'
         env:
           REPORT_EMAIL_TO: ${{ secrets.REPORT_EMAIL_TO }}
           REPORT_EMAIL_FROM: ${{ secrets.REPORT_EMAIL_FROM }}
