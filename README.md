@@ -12,6 +12,7 @@ the new repository is yours to customize and develop normally.
 
 | Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
+| [Angular](https://github.com/wodby/angular-boilerplate) | Client-side Angular applications | [`service-angular`](https://github.com/wodby/service-angular) | [`stack-angular`](https://github.com/wodby/stack-angular) |
 | [Django](https://github.com/wodby/django-boilerplate) | Python applications built with Django | [`service-django`](https://github.com/wodby/service-django) | [`stack-django`](https://github.com/wodby/stack-django) |
 | [Drupal CMS](https://github.com/wodby/drupal-cms-template) | New Drupal CMS projects | [`service-drupal-php`](https://github.com/wodby/service-drupal-php) | [`stack-drupal`](https://github.com/wodby/stack-drupal) |
 | [Vanilla Drupal](https://github.com/wodby/drupal-vanilla) | Standard Drupal projects | [`service-drupal-php`](https://github.com/wodby/service-drupal-php) | [`stack-drupal`](https://github.com/wodby/stack-drupal) |
@@ -19,15 +20,17 @@ the new repository is yours to customize and develop normally.
 | [FastAPI](https://github.com/wodby/fastapi-boilerplate) | Python APIs built with FastAPI | [`service-fastapi`](https://github.com/wodby/service-fastapi) | [`stack-fastapi`](https://github.com/wodby/stack-fastapi) |
 | [Flask](https://github.com/wodby/flask-boilerplate) | Python web applications built with Flask | [`service-flask`](https://github.com/wodby/service-flask) | [`stack-flask`](https://github.com/wodby/stack-flask) |
 | [Go](https://github.com/wodby/go-boilerplate) | Go web applications and APIs | [`service-go`](https://github.com/wodby/service-go) | [`stack-go`](https://github.com/wodby/stack-go) |
+| [HTML](https://github.com/wodby/html-boilerplate) | Dependency-free static websites | [`service-nginx`](https://github.com/wodby/service-nginx) | [`stack-html`](https://github.com/wodby/stack-html) |
 | [Laravel](https://github.com/wodby/laravel-boilerplate) | PHP applications built with Laravel | [`service-laravel-php`](https://github.com/wodby/service-laravel-php) | [`stack-laravel`](https://github.com/wodby/stack-laravel) |
 | [Next.js](https://github.com/wodby/nextjs-boilerplate) | Full-stack React applications built with Next.js | [`service-nextjs`](https://github.com/wodby/service-nextjs), [`service-httpd`](https://github.com/wodby/service-httpd) | [`stack-nextjs`](https://github.com/wodby/stack-nextjs) |
 | [Composer package](https://github.com/wodby/php-package-boilerplate) | PHP packages managed with Composer | [`service-php`](https://github.com/wodby/service-php) | [`stack-php`](https://github.com/wodby/stack-php) |
 | [Python](https://github.com/wodby/python-boilerplate) | General Python applications | [`service-python`](https://github.com/wodby/service-python) | [`stack-python`](https://github.com/wodby/stack-python) |
 | [Rails](https://github.com/wodby/rails-boilerplate) | Ruby applications built with Rails | [`service-rails`](https://github.com/wodby/service-rails) | [`stack-rails`](https://github.com/wodby/stack-rails) |
-| [React](https://github.com/wodby/react-boilerplate) | Client-side React applications | [`service-nginx`](https://github.com/wodby/service-nginx) | [`stack-html`](https://github.com/wodby/stack-html) |
+| [React](https://github.com/wodby/react-boilerplate) | Client-side React applications | [`service-react`](https://github.com/wodby/service-react) | [`stack-react`](https://github.com/wodby/stack-react) |
 | [Ruby](https://github.com/wodby/ruby-boilerplate) | General Ruby applications | [`service-ruby`](https://github.com/wodby/service-ruby) | [`stack-ruby`](https://github.com/wodby/stack-ruby) |
 | [Slack Inviter](https://github.com/wodby/slack-inviter) | Invitation pages for existing Slack communities | [`service-slack-inviter`](https://github.com/wodby/service-slack-inviter) | [`stack-slack-inviter`](https://github.com/wodby/stack-slack-inviter) |
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
+| [Vue](https://github.com/wodby/vue-boilerplate) | Client-side Vue applications | [`service-vue`](https://github.com/wodby/service-vue) | [`stack-vue`](https://github.com/wodby/stack-vue) |
 
 ## Upstream boilerplates
 
