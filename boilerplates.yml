@@ -1,6 +1,28 @@
 version: 1
 
 boilerplates:
+  - name: angular
+    title: Angular boilerplate
+    repository: wodby/angular-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-angular
+        manifest: service.yml
+        boilerplate: angular
+        ref:
+          branch: main
+
   - name: django
     title: Django boilerplate
     repository: wodby/django-boilerplate
@@ -145,6 +167,17 @@ boilerplates:
         ref:
           branch: main
 
+  - name: html
+    title: HTML boilerplate
+    repository: wodby/html-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-nginx
+        manifest: service.yml
+        boilerplate: html
+        ref:
+          branch: main
+
   - name: laravel
     title: Laravel boilerplate
     repository: wodby/laravel-boilerplate
@@ -278,7 +311,7 @@ boilerplates:
       allowed_changes:
         - package-lock.json
     services:
-      - repository: wodby/service-nginx
+      - repository: wodby/service-react
         manifest: service.yml
         boilerplate: react
         ref:
@@ -339,6 +372,28 @@ boilerplates:
       - repository: wodby/service-wordpress-php
         manifest: service.yml
         boilerplate: vanilla
+        ref:
+          branch: main
+
+  - name: vue
+    title: Vue boilerplate
+    repository: wodby/vue-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-vue
+        manifest: service.yml
+        boilerplate: vue
         ref:
           branch: main
 
