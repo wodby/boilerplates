@@ -172,6 +172,11 @@ boilerplates:
     repository: wodby/html-boilerplate
     managed: false
     services:
+      - repository: wodby/service-httpd
+        manifest: service.yml
+        boilerplate: html
+        ref:
+          branch: main
       - repository: wodby/service-nginx
         manifest: service.yml
         boilerplate: html
@@ -218,11 +223,6 @@ boilerplates:
       allowed_changes:
         - package-lock.json
     services:
-      - repository: wodby/service-httpd
-        manifest: service.yml
-        boilerplate: nextjs
-        ref:
-          branch: main
       - repository: wodby/service-nextjs
         manifest: service.yml
         boilerplate: nextjs
