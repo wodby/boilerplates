@@ -45,6 +45,24 @@ boilerplates:
         ref:
           branch: main
 
+  - name: discourse
+    title: Discourse
+    repository: discourse/discourse
+    managed: false
+    services:
+      - repository: wodby/service-discourse
+        manifest: service.yml
+        boilerplate: stable
+        ref:
+          tag: ^2026.8
+        pipeline: pipeline.yml
+      - repository: wodby/service-discourse
+        manifest: service.yml
+        boilerplate: esr
+        ref:
+          tag: ^2026.7
+        pipeline: pipeline.yml
+
   - name: drupal-cms
     title: Drupal CMS
     repository: wodby/drupal-cms-template
