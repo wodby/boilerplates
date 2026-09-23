@@ -32,6 +32,16 @@ the new repository is yours to customize and develop normally.
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
 | [Vue](https://github.com/wodby/vue-boilerplate) | Client-side Vue applications | [`service-vue`](https://github.com/wodby/service-vue) | [`stack-vue`](https://github.com/wodby/stack-vue) |
 
+## Standalone inference examples
+
+[LLM inference client](https://github.com/wodby/llm-inference-boilerplate) provides
+dependency-free Python examples for ordinary and streaming chat completions
+against an existing OpenAI-compatible endpoint, including the
+[vLLM stack](https://github.com/wodby/stack-vllm).
+
+Run it from a machine that can reach the private endpoint. It does not deploy a
+model server and is not a selectable application-build boilerplate.
+
 ## Upstream boilerplates
 
 Wodby also supports starter projects maintained by their upstream communities:
