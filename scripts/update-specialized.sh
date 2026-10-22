@@ -5,6 +5,8 @@ set -euo pipefail
 BOILERPLATES_REPO_ROOT="${BOILERPLATES_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 SPECIALIZED_WORK_ROOT=""
 
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/git_identity.sh"
+
 if [[ -n "${DEBUG:-}" ]]; then
   set -x
 fi
@@ -54,14 +56,7 @@ _specialized_repo() {
 }
 
 _ensure_git_identity() {
-  local repo_dir="${1}"
-
-  if [[ -z "$(git -C "${repo_dir}" config --get user.email || true)" && -n "${WODBOT_GIT_EMAIL:-}" ]]; then
-    git -C "${repo_dir}" config --local user.email "${WODBOT_GIT_EMAIL}"
-  fi
-  if [[ -z "$(git -C "${repo_dir}" config --get user.name || true)" && -n "${WODBOT_GIT_NAME:-}" ]]; then
-    git -C "${repo_dir}" config --local user.name "${WODBOT_GIT_NAME}"
-  fi
+  configure_wodbot_git_identity "${1}"
 }
 
 _git_clone() {
