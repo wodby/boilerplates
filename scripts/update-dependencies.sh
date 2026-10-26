@@ -232,8 +232,12 @@ _update_npm_boilerplate() {
   local update_image="${1}"
   local host_repo_dir="${2}"
 
+  # npm 12 defaults allow-remote to none, and --package-lock-only extracts packages with bundled dependencies
+  # without the registry-tarball exemption that installs get, so registry packages such as
+  # @tailwindcss/oxide-wasm32-wasi fail with EALLOWREMOTE. Keep npm 11's default for the lockfile update only;
+  # validation still runs npm ci with the image's own defaults.
   _boilerplate_run "${update_image}" "${host_repo_dir}" \
-    npm update --package-lock-only --ignore-scripts
+    npm update --package-lock-only --ignore-scripts --allow-remote=all
 }
 
 _validate_npm_boilerplate() {

@@ -272,6 +272,15 @@ _boilerplate_build() {{
         self.assertEqual(result.stdout.count("npm run check"), 2)
         self.assertEqual(result.stdout.count("build slack-inviter node-check"), 2)
 
+    def test_npm_update_allows_registry_tarballs_under_npm_12(self):
+        result = self.run_validation("_update_npm_boilerplate wodby/node:26 /tmp/repo")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(
+            "npm update --package-lock-only --ignore-scripts --allow-remote=all",
+            result.stdout,
+        )
+
 
 class ServiceManifestConsumerTest(unittest.TestCase):
     class FakeClient:

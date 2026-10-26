@@ -234,7 +234,10 @@ _update_drupal_cms() {
     return 1
   fi
   git -C "${upstream}" checkout "${latest_ver}"
-  cp -R "${upstream}/assets" "${upstream}/config" "${upstream}/composer.json" "${target}"
+  # Drupal CMS 2.2.5 dropped assets/ and config/, leaving composer.json as the only project file upstream.
+  # Remove the template's old copies in the same commit as the composer.json that stops referencing them.
+  rm -rf "${target}/assets" "${target}/config"
+  cp "${upstream}/composer.json" "${target}"
   _assert_all_entries_copied "${upstream}" "${target}"
   _install_composer
   (
