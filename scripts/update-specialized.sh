@@ -216,7 +216,7 @@ _update_wordpress_vanilla() {
     cd "${target}"
     # WordPress majors are ordinary releases, not breaking changes, so follow the latest one: a caret constraint alone
     # would keep the boilerplate on its old major forever.
-    latest_major=$(composer show --all --format=json roots/wordpress-full | php -r '
+    latest_major=$(composer show --all --format=json roots/wordpress-no-content | php -r '
       $versions = array_filter(json_decode(stream_get_contents(STDIN), true)["versions"] ?? [],
         fn ($v) => preg_match("/^[0-9]+\.[0-9]+(\.[0-9]+)?$/", $v));
       usort($versions, "version_compare");
@@ -225,7 +225,7 @@ _update_wordpress_vanilla() {
       echo >&2 "Failed to detect the latest WordPress major version"
       exit 1
     fi
-    composer require --no-update "roots/wordpress-full:^${latest_major}.0"
+    composer require --no-update "roots/wordpress-no-content:^${latest_major}.0"
     composer update --no-install --ignore-platform-reqs
   )
   _commit_and_publish "${target}" "wodby/wordpress-vanilla" "Update WordPress"
