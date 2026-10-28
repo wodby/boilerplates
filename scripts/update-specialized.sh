@@ -135,27 +135,35 @@ _install_composer() {
   rm -rf "${installer_dir}"
 }
 
-_assert_all_entries_copied() {
+_mirror_upstream_entries() {
   local source_dir="${1}"
   local target_dir="${2}"
-  local -a missing_entries=()
+  local -n keep_entries="${3}"
+  local -n skip_entries="${4}"
   local entry
   local name
 
+  # Remove what upstream no longer has, except the files the template owns.
   while IFS= read -r entry; do
     name="${entry##*/}"
-    if [[ "${name}" == .* ]] || [[ "${name}" == *.md ]] || [[ "${name}" == *.txt ]]; then
+    if [[ " ${keep_entries[*]} " == *" ${name} "* ]]; then
       continue
     fi
-    if [[ ! -e "${target_dir}/${name}" ]]; then
-      missing_entries+=("${name}")
+    if [[ ! -e "${source_dir}/${name}" ]]; then
+      echo "Removing ${name}, which upstream no longer has"
+      rm -rf "${entry}"
     fi
-  done < <(find "${source_dir}" -mindepth 1 -maxdepth 1 | sort)
+  done < <(find "${target_dir}" -mindepth 1 -maxdepth 1 | sort)
 
-  if [[ "${#missing_entries[@]}" -gt 0 ]]; then
-    echo >&2 "Failed to copy upstream entries: ${missing_entries[*]}"
-    return 1
-  fi
+  # Replace every other entry with upstream's copy, so changes deeper in the tree arrive too.
+  while IFS= read -r entry; do
+    name="${entry##*/}"
+    if [[ " ${keep_entries[*]} " == *" ${name} "* ]] || [[ " ${skip_entries[*]} " == *" ${name} "* ]]; then
+      continue
+    fi
+    rm -rf "${target_dir:?}/${name}"
+    cp -R "${entry}" "${target_dir}/${name}"
+  done < <(find "${source_dir}" -mindepth 1 -maxdepth 1 | sort)
 }
 
 _update_drupal_vanilla() {
@@ -246,11 +254,13 @@ _update_drupal_cms() {
     return 1
   fi
   git -C "${upstream}" checkout "${latest_ver}"
-  # Drupal CMS 2.2.5 dropped assets/ and config/, leaving composer.json as the only project file upstream.
-  # Remove the template's old copies in the same commit as the composer.json that stops referencing them.
-  rm -rf "${target}/assets" "${target}/config"
-  cp "${upstream}/composer.json" "${target}"
-  _assert_all_entries_copied "${upstream}" "${target}"
+  # The template is upstream's project template plus Wodby's build files: mirror upstream, additions and removals
+  # included, and keep the template's own README, build pipeline, Docker ignore file and lock file. DDEV configuration
+  # and upstream's contribution guide do not apply to the template.
+  local -a template_owned=(.git .wodby .dockerignore README.md composer.lock)
+  local -a upstream_skipped=(.git .ddev CONTRIBUTING.md)
+  _mirror_upstream_entries "${upstream}" "${target}" template_owned upstream_skipped
+  printf '\n# Editors\n.idea\n' >> "${target}/.gitignore"
   _install_composer
   (
     cd "${target}"
@@ -260,7 +270,9 @@ _update_drupal_cms() {
     composer require --no-update \
       "drupal/drupal_cms_blank:^${latest_ver%%.*}" \
       "drupal/drupal_cms_starter:^${latest_ver%%.*}"
-    composer update --no-install --ignore-platform-reqs --no-security-blocking
+    # Resolve for the lowest PHP version the Drupal 11 service offers, so every option can install the lock file.
+    composer config platform.php 8.3.0
+    composer update --no-install --ignore-platform-req='ext-*' --no-security-blocking
   )
   _commit_and_publish "${target}" "wodby/drupal-cms-template" "Update Drupal CMS 2.x"
 }
