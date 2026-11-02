@@ -13,6 +13,7 @@ the new repository is yours to customize and develop normally.
 | Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
 | [Angular](https://github.com/wodby/angular-boilerplate) | Client-side Angular applications | [`service-angular`](https://github.com/wodby/service-angular) | [`stack-angular`](https://github.com/wodby/stack-angular) |
+| [ASP.NET Core](https://github.com/wodby/aspnetcore-boilerplate) | .NET web applications and APIs built with ASP.NET Core | [`service-aspnetcore`](https://github.com/wodby/service-aspnetcore) | [`stack-aspnetcore`](https://github.com/wodby/stack-aspnetcore) |
 | [Django](https://github.com/wodby/django-boilerplate) | Python applications built with Django | [`service-django`](https://github.com/wodby/service-django) | [`stack-django`](https://github.com/wodby/stack-django) |
 | [Drupal CMS](https://github.com/wodby/drupal-cms-template) | New Drupal CMS projects | [`service-drupal-php`](https://github.com/wodby/service-drupal-php) | [`stack-drupal`](https://github.com/wodby/stack-drupal) |
 | [Vanilla Drupal](https://github.com/wodby/drupal-vanilla) | Standard Drupal projects | [`service-drupal-php`](https://github.com/wodby/service-drupal-php) | [`stack-drupal`](https://github.com/wodby/stack-drupal) |
