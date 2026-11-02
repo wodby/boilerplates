@@ -379,6 +379,18 @@ boilerplates:
         ref:
           tag: 1.0.1
 
+  - name: spring-boot
+    title: Spring Boot boilerplate
+    repository: wodby/spring-boot-boilerplate
+    # Maven has no lock file for the generic updater; dependency updates are manual for now.
+    managed: false
+    services:
+      - repository: wodby/service-spring-boot
+        manifest: service.yml
+        boilerplate: spring-boot
+        ref:
+          branch: main
+
   - name: symfony
     title: Symfony boilerplate
     repository: wodby/symfony-boilerplate
