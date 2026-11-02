@@ -29,6 +29,7 @@ the new repository is yours to customize and develop normally.
 | [React](https://github.com/wodby/react-boilerplate) | Client-side React applications | [`service-react`](https://github.com/wodby/service-react) | [`stack-react`](https://github.com/wodby/stack-react) |
 | [Ruby](https://github.com/wodby/ruby-boilerplate) | General Ruby applications | [`service-ruby`](https://github.com/wodby/service-ruby) | [`stack-ruby`](https://github.com/wodby/stack-ruby) |
 | [Slack Inviter](https://github.com/wodby/slack-inviter) | Invitation pages for existing Slack communities | [`service-slack-inviter`](https://github.com/wodby/service-slack-inviter) | [`stack-slack-inviter`](https://github.com/wodby/stack-slack-inviter) |
+| [Spring Boot](https://github.com/wodby/spring-boot-boilerplate) | Java web applications built with Spring Boot and PostgreSQL | [`service-spring-boot`](https://github.com/wodby/service-spring-boot) | [`stack-spring-boot`](https://github.com/wodby/stack-spring-boot) |
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
 | [Vue](https://github.com/wodby/vue-boilerplate) | Client-side Vue applications | [`service-vue`](https://github.com/wodby/service-vue) | [`stack-vue`](https://github.com/wodby/stack-vue) |
 
