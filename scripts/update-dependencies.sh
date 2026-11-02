@@ -146,6 +146,21 @@ _boilerplate_run_go() {
     "$@"
 }
 
+# Wodby Rust images keep Cargo's home under /home/wodby, which is not writable
+# when the container runs as the GitHub runner's host UID. Build output stays
+# out of the checkout, so only Cargo.lock can change there.
+_boilerplate_run_cargo() {
+  local image="${1}"
+  local host_repo_dir="${2}"
+  shift 2
+
+  _boilerplate_run "${image}" "${host_repo_dir}" \
+    env \
+    CARGO_HOME=/tmp/cargo \
+    CARGO_TARGET_DIR=/tmp/target \
+    "$@"
+}
+
 _boilerplate_validation_tag() {
   local name="${1}"
   local image="${2}"
@@ -339,6 +354,32 @@ _validate_go_boilerplate() {
   done < <(jq -r '.[]' <<<"${validation_images}")
 }
 
+# Cargo update stays within the version requirements in Cargo.toml and
+# rewrites only Cargo.lock.
+_update_cargo_boilerplate() {
+  local update_image="${1}"
+  local host_repo_dir="${2}"
+
+  _boilerplate_run_cargo "${update_image}" "${host_repo_dir}" cargo update
+}
+
+_validate_cargo_boilerplate() {
+  local name="${1}"
+  local profile="${2}"
+  local repo_dir="${3}"
+  local host_repo_dir="${4}"
+  local validation_images="${5}"
+  local image
+
+  while IFS= read -r image; do
+    _boilerplate_run_cargo "${image}" "${host_repo_dir}" cargo fmt --check
+    _boilerplate_run_cargo "${image}" "${host_repo_dir}" \
+      cargo clippy --locked --all-targets -- -D warnings
+    _boilerplate_run_cargo "${image}" "${host_repo_dir}" cargo test --locked
+    _boilerplate_build "${name}" "${profile}" "${image}" "${repo_dir}"
+  done < <(jq -r '.[]' <<<"${validation_images}")
+}
+
 _set_boilerplate_push_origin() {
   local repo_dir="${1}"
   local slug="${2}"
@@ -417,6 +458,9 @@ update_boilerplate_dependencies() (
     go)
       _update_go_boilerplate "${update_image}" "${host_repo_dir}"
       ;;
+    cargo)
+      _update_cargo_boilerplate "${update_image}" "${host_repo_dir}"
+      ;;
     *)
       echo >&2 "Unsupported boilerplate ecosystem: ${ecosystem}"
       return 1
@@ -450,6 +494,10 @@ update_boilerplate_dependencies() (
       ;;
     go)
       _validate_go_boilerplate "${name}" "${profile}" "${repo_dir}" \
+        "${host_repo_dir}" "${validation_images}"
+      ;;
+    cargo)
+      _validate_cargo_boilerplate "${name}" "${profile}" "${repo_dir}" \
         "${host_repo_dir}" "${validation_images}"
       ;;
   esac
