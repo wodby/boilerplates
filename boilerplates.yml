@@ -391,6 +391,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: symfony
+    title: Symfony boilerplate
+    repository: wodby/symfony-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: composer
+      profile: phpunit
+      update_image: wodby/php:8.4
+      validation_images:
+        - wodby/php:8.4
+        - wodby/php:8.5
+      allowed_changes:
+        - composer.lock
+    services:
+      - repository: wodby/service-symfony-php
+        manifest: service.yml
+        boilerplate: symfony
+        ref:
+          branch: main
+
   - name: wordpress-vanilla
     title: Vanilla WordPress
     repository: wodby/wordpress-vanilla

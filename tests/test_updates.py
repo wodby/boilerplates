@@ -32,6 +32,7 @@ EXPECTED_BOILERPLATES = {
     "react",
     "ruby",
     "slack-inviter",
+    "symfony",
     "vue",
 }
 
@@ -103,7 +104,7 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def test_service_consumers_use_canonical_boilerplate_key(self):
         _, consumers = catalog_consumers(self.catalog)
 
-        self.assertEqual(len(consumers), 24)
+        self.assertEqual(len(consumers), 25)
         for entry in self.catalog["boilerplates"]:
             for service in entry["services"]:
                 self.assertIn("boilerplate", service)
