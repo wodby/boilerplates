@@ -213,6 +213,18 @@ boilerplates:
         ref:
           branch: main
 
+  - name: kotlin
+    title: Kotlin boilerplate
+    repository: wodby/kotlin-boilerplate
+    # Dependency updates have no Gradle ecosystem yet.
+    managed: false
+    services:
+      - repository: wodby/service-kotlin
+        manifest: service.yml
+        boilerplate: kotlin
+        ref:
+          branch: main
+
   - name: laravel
     title: Laravel boilerplate
     repository: wodby/laravel-boilerplate
