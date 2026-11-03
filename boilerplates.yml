@@ -213,6 +213,18 @@ boilerplates:
         ref:
           branch: main
 
+  - name: java
+    title: Java boilerplate
+    repository: wodby/java-boilerplate
+    # Maven has no lock file for the generic updater; dependency updates are manual for now.
+    managed: false
+    services:
+      - repository: wodby/service-java
+        manifest: service.yml
+        boilerplate: java
+        ref:
+          branch: main
+
   - name: kotlin
     title: Kotlin boilerplate
     repository: wodby/kotlin-boilerplate
