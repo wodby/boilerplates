@@ -29,10 +29,12 @@ DEPENDENCY_FILES = {
     "composer": ["composer.lock"],
     "go": ["go.mod", "go.sum"],
     "npm": ["package-lock.json"],
+    "nuget": ["*.csproj", "*.fsproj", "Directory.Packages.props", "packages.lock.json", "*/packages.lock.json"],
     "uv": ["uv.lock"],
 }
 UPDATE_PROFILES = {
     "django",
+    "aspnetcore",
     "expressjs",
     "go",
     "node-check",
