@@ -25,6 +25,7 @@ GENERIC_UPDATE_REPOSITORY = "wodby/boilerplates"
 SPECIALIZED_UPDATE_REPOSITORY = "wodby/boilerplates"
 DEPENDENCY_FILES = {
     "bundler": ["Gemfile.lock"],
+    "cargo": ["Cargo.lock"],
     "composer": ["composer.lock"],
     "go": ["go.mod", "go.sum"],
     "npm": ["package-lock.json"],
@@ -41,6 +42,7 @@ UPDATE_PROFILES = {
     "python",
     "rails",
     "ruby",
+    "rust",
 }
 
 

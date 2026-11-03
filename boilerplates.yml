@@ -381,6 +381,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: rust
+    title: Rust boilerplate
+    repository: wodby/rust-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: cargo
+      profile: rust
+      update_image: wodby/rust:1
+      validation_images:
+        - wodby/rust:1
+        - wodby/rust:1-dev
+      allowed_changes:
+        - Cargo.lock
+    services:
+      - repository: wodby/service-rust
+        manifest: service.yml
+        boilerplate: rust
+        ref:
+          branch: main
+
   - name: slack-inviter
     title: Slack Inviter
     repository: wodby/slack-inviter

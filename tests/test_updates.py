@@ -31,6 +31,7 @@ EXPECTED_BOILERPLATES = {
     "rails",
     "react",
     "ruby",
+    "rust",
     "slack-inviter",
     "symfony",
     "vue",
@@ -44,6 +45,7 @@ EXPECTED_SPECIALIZED_BOILERPLATES = {
 
 EXPECTED_DEPENDENCY_FILES = {
     "bundler": ["Gemfile.lock"],
+    "cargo": ["Cargo.lock"],
     "composer": ["composer.lock"],
     "go": ["go.mod", "go.sum"],
     "npm": ["package-lock.json"],
@@ -61,6 +63,7 @@ EXPECTED_PROFILES = {
     "python",
     "rails",
     "ruby",
+    "rust",
 }
 
 
@@ -104,7 +107,7 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def test_service_consumers_use_canonical_boilerplate_key(self):
         _, consumers = catalog_consumers(self.catalog)
 
-        self.assertEqual(len(consumers), 25)
+        self.assertEqual(len(consumers), 29)
         for entry in self.catalog["boilerplates"]:
             for service in entry["services"]:
                 self.assertIn("boilerplate", service)
