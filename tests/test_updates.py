@@ -33,6 +33,7 @@ EXPECTED_BOILERPLATES = {
     "ruby",
     "rust",
     "slack-inviter",
+    "symfony",
     "vue",
 }
 
