@@ -391,6 +391,40 @@ boilerplates:
         ref:
           tag: 1.0.1
 
+  - name: spring-boot
+    title: Spring Boot boilerplate
+    repository: wodby/spring-boot-boilerplate
+    # Maven has no lock file for the generic updater; dependency updates are manual for now.
+    managed: false
+    services:
+      - repository: wodby/service-spring-boot
+        manifest: service.yml
+        boilerplate: spring-boot
+        ref:
+          branch: main
+
+  - name: symfony
+    title: Symfony boilerplate
+    repository: wodby/symfony-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: composer
+      profile: phpunit
+      update_image: wodby/php:8.4
+      validation_images:
+        - wodby/php:8.4
+        - wodby/php:8.5
+      allowed_changes:
+        - composer.lock
+    services:
+      - repository: wodby/service-symfony-php
+        manifest: service.yml
+        boilerplate: symfony
+        ref:
+          branch: main
+
   - name: wordpress-vanilla
     title: Vanilla WordPress
     repository: wodby/wordpress-vanilla
