@@ -33,6 +33,7 @@ the new repository is yours to customize and develop normally.
 | [Slack Inviter](https://github.com/wodby/slack-inviter) | Invitation pages for existing Slack communities | [`service-slack-inviter`](https://github.com/wodby/service-slack-inviter) | [`stack-slack-inviter`](https://github.com/wodby/stack-slack-inviter) |
 | [Spring Boot](https://github.com/wodby/spring-boot-boilerplate) | Java web applications built with Spring Boot and PostgreSQL | [`service-spring-boot`](https://github.com/wodby/service-spring-boot) | [`stack-spring-boot`](https://github.com/wodby/stack-spring-boot) |
 | [Symfony](https://github.com/wodby/symfony-boilerplate) | PHP applications built with Symfony | [`service-symfony-php`](https://github.com/wodby/service-symfony-php) | [`stack-symfony`](https://github.com/wodby/stack-symfony) |
+| [TanStack Start](https://github.com/wodby/tanstack-start-boilerplate) | Full-stack React applications built with TanStack Start | [`service-tanstack-start`](https://github.com/wodby/service-tanstack-start) | [`stack-tanstack-start`](https://github.com/wodby/stack-tanstack-start) |
 | [Vanilla WordPress](https://github.com/wodby/wordpress-vanilla) | Composer-based WordPress projects | [`service-wordpress-php`](https://github.com/wodby/service-wordpress-php) | [`stack-wordpress`](https://github.com/wodby/stack-wordpress) |
 | [Vue](https://github.com/wodby/vue-boilerplate) | Client-side Vue applications | [`service-vue`](https://github.com/wodby/service-vue) | [`stack-vue`](https://github.com/wodby/stack-vue) |
 

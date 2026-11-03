@@ -459,6 +459,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: tanstack-start
+    title: TanStack Start boilerplate
+    repository: wodby/tanstack-start-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-tanstack-start
+        manifest: service.yml
+        boilerplate: tanstack-start
+        ref:
+          branch: main
+
   - name: wordpress-vanilla
     title: Vanilla WordPress
     repository: wodby/wordpress-vanilla
