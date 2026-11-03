@@ -23,6 +23,18 @@ boilerplates:
         ref:
           branch: main
 
+  - name: aspnetcore
+    title: ASP.NET Core boilerplate
+    repository: wodby/aspnetcore-boilerplate
+    # The generic updater has no NuGet ecosystem; dependency updates are manual for now.
+    managed: false
+    services:
+      - repository: wodby/service-aspnetcore
+        manifest: service.yml
+        boilerplate: aspnetcore
+        ref:
+          branch: main
+
   - name: django
     title: Django boilerplate
     repository: wodby/django-boilerplate
