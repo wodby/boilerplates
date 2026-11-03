@@ -103,8 +103,21 @@ _assert_only_allowed_boilerplate_changes() {
   local allowed_changes="${2}"
   local path
 
+  local pattern
+  local allowed
+
+  # Entries are paths or shell patterns, such as */packages.lock.json for the lock file
+  # next to every NuGet project.
   while IFS= read -r path; do
-    if ! jq -e --arg path "${path}" 'index($path) != null' <<<"${allowed_changes}" >/dev/null; then
+    allowed=""
+    while IFS= read -r pattern; do
+      # shellcheck disable=SC2053 # The entry is matched as a pattern on purpose.
+      if [[ "${path}" == ${pattern} ]]; then
+        allowed=1
+        break
+      fi
+    done < <(jq -r '.[]' <<<"${allowed_changes}")
+    if [[ -z "${allowed}" ]]; then
       echo >&2 "Boilerplate dependency update changed unexpected file: ${path}"
       return 1
     fi
@@ -161,6 +174,23 @@ _boilerplate_run_cargo() {
     "$@"
 }
 
+# Wodby .NET images keep the CLI's and NuGet's state under /home/wodby, which is not
+# writable when the container runs as the GitHub runner's host UID. Build output goes
+# to the projects' ignored bin/ and obj/ directories.
+_boilerplate_run_dotnet() {
+  local image="${1}"
+  local host_repo_dir="${2}"
+  shift 2
+
+  _boilerplate_run "${image}" "${host_repo_dir}" \
+    env \
+    DOTNET_CLI_HOME=/tmp \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1 \
+    NUGET_PACKAGES=/tmp/nuget \
+    "$@"
+}
+
 _boilerplate_validation_tag() {
   local name="${1}"
   local image="${2}"
@@ -200,6 +230,11 @@ _boilerplate_build() {
       ;;
     rails)
       docker run --rm "${tag}" bin/rails zeitwerk:check
+      ;;
+    aspnetcore)
+      # Start the published application as the image does and wait for its health check.
+      docker run --rm "${tag}" sh -c \
+        'dotnet-app & for _ in $(seq 1 30); do curl -fsS http://localhost:8080/healthz && exit 0; sleep 1; done; exit 1'
       ;;
   esac
 
@@ -380,6 +415,44 @@ _validate_cargo_boilerplate() {
   done < <(jq -r '.[]' <<<"${validation_images}")
 }
 
+# NuGet has no version ranges to update within, so updates raise the project files'
+# package versions to the newest release of the same major version, then regenerate
+# every packages.lock.json. Prereleases are never selected.
+_update_nuget_boilerplate() {
+  local update_image="${1}"
+  local host_repo_dir="${2}"
+
+  _boilerplate_run_dotnet "${update_image}" "${host_repo_dir}" sh -ec '
+    dotnet package list --outdated --highest-minor --format json > /tmp/outdated.json
+    jq -r ".projects[] | .path as \$project | (.frameworks // [])[] | (.topLevelPackages // [])[]
+      | select(.latestVersion != null and .latestVersion != .requestedVersion)
+      | [\$project, .id, .latestVersion] | @tsv" /tmp/outdated.json | sort -u |
+      while IFS="$(printf "\t")" read -r project id version; do
+        dotnet package add "${id}" --version "${version}" --project "${project}"
+      done
+    dotnet restore --force-evaluate
+  '
+}
+
+# Tests need the SDK, which only development images carry; every image builds the
+# Dockerfile, since the service image is its final stage.
+_validate_nuget_boilerplate() {
+  local name="${1}"
+  local profile="${2}"
+  local repo_dir="${3}"
+  local host_repo_dir="${4}"
+  local validation_images="${5}"
+  local image
+
+  while IFS= read -r image; do
+    if _boilerplate_run "${image}" "${host_repo_dir}" sh -c 'dotnet --list-sdks | grep -q .'; then
+      _boilerplate_run_dotnet "${image}" "${host_repo_dir}" \
+        dotnet test -p:RestoreLockedMode=true
+    fi
+    _boilerplate_build "${name}" "${profile}" "${image}" "${repo_dir}"
+  done < <(jq -r '.[]' <<<"${validation_images}")
+}
+
 _set_boilerplate_push_origin() {
   local repo_dir="${1}"
   local slug="${2}"
@@ -461,6 +534,9 @@ update_boilerplate_dependencies() (
     cargo)
       _update_cargo_boilerplate "${update_image}" "${host_repo_dir}"
       ;;
+    nuget)
+      _update_nuget_boilerplate "${update_image}" "${host_repo_dir}"
+      ;;
     *)
       echo >&2 "Unsupported boilerplate ecosystem: ${ecosystem}"
       return 1
@@ -498,6 +574,10 @@ update_boilerplate_dependencies() (
       ;;
     cargo)
       _validate_cargo_boilerplate "${name}" "${profile}" "${repo_dir}" \
+        "${host_repo_dir}" "${validation_images}"
+      ;;
+    nuget)
+      _validate_nuget_boilerplate "${name}" "${profile}" "${repo_dir}" \
         "${host_repo_dir}" "${validation_images}"
       ;;
   esac

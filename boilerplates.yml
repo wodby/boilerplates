@@ -26,8 +26,22 @@ boilerplates:
   - name: aspnetcore
     title: ASP.NET Core boilerplate
     repository: wodby/aspnetcore-boilerplate
-    # The generic updater has no NuGet ecosystem; dependency updates are manual for now.
-    managed: false
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: nuget
+      profile: aspnetcore
+      update_image: wodby/dotnet:10.0-dev
+      validation_images:
+        - wodby/dotnet:10.0
+        - wodby/dotnet:10.0-dev
+      allowed_changes:
+        - "*.csproj"
+        - "*.fsproj"
+        - Directory.Packages.props
+        - packages.lock.json
+        - "*/packages.lock.json"
     services:
       - repository: wodby/service-aspnetcore
         manifest: service.yml

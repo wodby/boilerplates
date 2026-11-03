@@ -19,6 +19,7 @@ WORKFLOW_PATH = ROOT / ".github" / "workflows" / "update.yml"
 
 EXPECTED_BOILERPLATES = {
     "angular",
+    "aspnetcore",
     "django",
     "expressjs",
     "fastapi",
@@ -50,10 +51,12 @@ EXPECTED_DEPENDENCY_FILES = {
     "composer": ["composer.lock"],
     "go": ["go.mod", "go.sum"],
     "npm": ["package-lock.json"],
+    "nuget": ["*.csproj", "*.fsproj", "Directory.Packages.props", "packages.lock.json", "*/packages.lock.json"],
     "uv": ["uv.lock"],
 }
 
 EXPECTED_PROFILES = {
+    "aspnetcore",
     "django",
     "expressjs",
     "go",
@@ -202,6 +205,21 @@ class AllowedChangesTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("unexpected file", result.stderr)
 
+    def test_patterns_allow_nuget_files_next_to_each_project(self):
+        repo = self.make_repo()
+        (repo / "src" / "App").mkdir(parents=True)
+        (repo / "src" / "App" / "App.csproj").write_text("<Project />\n")
+        (repo / "src" / "App" / "packages.lock.json").write_text("{}\n")
+        nuget = EXPECTED_DEPENDENCY_FILES["nuget"]
+
+        self.assertEqual(self.run_check(repo, nuget).returncode, 0)
+
+        (repo / "src" / "App" / "Program.cs").write_text("// changed\n")
+        result = self.run_check(repo, nuget)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("src/App/Program.cs", result.stderr)
+
 
 class ValidationEnvironmentTest(unittest.TestCase):
     def run_validation(self, command: str) -> subprocess.CompletedProcess:
@@ -221,6 +239,24 @@ _boilerplate_build() {{
             text=True,
             check=False,
         )
+
+    def test_nuget_validation_tests_only_in_images_with_an_sdk(self):
+        # Only the SDK image answers the SDK probe.
+        result = self.run_validation(
+            "_boilerplate_run() { if [[ \"$*\" == *--list-sdks* ]]; then [[ \"$1\" == *:sdk ]]; "
+            "return; fi; printf '%s\\n' \"$*\"; }\n"
+            "_validate_nuget_boilerplate aspnetcore aspnetcore /tmp/repo /tmp/repo "
+            "'[\"wodby/dotnet:runtime\", \"wodby/dotnet:sdk\"]'"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("build aspnetcore aspnetcore wodby/dotnet:runtime /tmp/repo", result.stdout)
+        self.assertIn("build aspnetcore aspnetcore wodby/dotnet:sdk /tmp/repo", result.stdout)
+        tests = [line for line in result.stdout.splitlines() if "dotnet test" in line]
+        self.assertEqual(len(tests), 1, result.stdout)
+        self.assertIn("wodby/dotnet:sdk", tests[0])
+        self.assertIn("NUGET_PACKAGES=/tmp/nuget", tests[0])
+        self.assertIn("-p:RestoreLockedMode=true", tests[0])
 
     def test_django_validation_supplies_secret_without_enabling_debug(self):
         result = self.run_validation(
