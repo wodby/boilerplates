@@ -49,6 +49,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: astro
+    title: Astro boilerplate
+    repository: wodby/astro-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-astro
+        manifest: service.yml
+        boilerplate: astro
+        ref:
+          branch: main
+
   - name: django
     title: Django boilerplate
     repository: wodby/django-boilerplate
@@ -297,6 +319,28 @@ boilerplates:
         ref:
           branch: main
 
+  - name: nuxt
+    title: Nuxt boilerplate
+    repository: wodby/nuxt-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-nuxt
+        manifest: service.yml
+        boilerplate: nuxt
+        ref:
+          branch: main
+
   - name: php-package
     title: Composer boilerplate
     repository: wodby/php-package-boilerplate
@@ -460,6 +504,50 @@ boilerplates:
       - repository: wodby/service-spring-boot
         manifest: service.yml
         boilerplate: spring-boot
+        ref:
+          branch: main
+
+  - name: strapi
+    title: Strapi boilerplate
+    repository: wodby/strapi-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-strapi
+        manifest: service.yml
+        boilerplate: strapi
+        ref:
+          branch: main
+
+  - name: sveltekit
+    title: SvelteKit boilerplate
+    repository: wodby/sveltekit-boilerplate
+    managed: true
+    dependency_updates:
+      repository: wodby/boilerplates
+      mode: generic
+      ecosystem: npm
+      profile: npm-build
+      update_image: wodby/node:26
+      validation_images:
+        - wodby/node:22
+        - wodby/node:26
+      allowed_changes:
+        - package-lock.json
+    services:
+      - repository: wodby/service-sveltekit
+        manifest: service.yml
+        boilerplate: sveltekit
         ref:
           branch: main
 
