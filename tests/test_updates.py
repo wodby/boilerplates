@@ -20,6 +20,7 @@ WORKFLOW_PATH = ROOT / ".github" / "workflows" / "update.yml"
 EXPECTED_BOILERPLATES = {
     "angular",
     "aspnetcore",
+    "astro",
     "django",
     "expressjs",
     "fastapi",
@@ -27,6 +28,7 @@ EXPECTED_BOILERPLATES = {
     "go",
     "laravel",
     "nextjs",
+    "nuxt",
     "php-package",
     "python",
     "rails",
@@ -34,6 +36,8 @@ EXPECTED_BOILERPLATES = {
     "ruby",
     "rust",
     "slack-inviter",
+    "strapi",
+    "sveltekit",
     "symfony",
     "tanstack-start",
     "vue",
@@ -111,7 +115,7 @@ class BoilerplateUpdateConfigTest(unittest.TestCase):
     def test_service_consumers_use_canonical_boilerplate_key(self):
         _, consumers = catalog_consumers(self.catalog)
 
-        self.assertEqual(len(consumers), 31)
+        self.assertEqual(len(consumers), 35)
         for entry in self.catalog["boilerplates"]:
             for service in entry["services"]:
                 self.assertIn("boilerplate", service)
