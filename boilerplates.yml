@@ -341,6 +341,18 @@ boilerplates:
         ref:
           branch: main
 
+  - name: odoo
+    title: Odoo modules boilerplate
+    repository: wodby/odoo-boilerplate
+    # Modules and requirements.txt only; Odoo itself comes from the wodby/odoo image.
+    managed: false
+    services:
+      - repository: wodby/service-odoo
+        manifest: service.yml
+        boilerplate: odoo
+        ref:
+          branch: main
+
   - name: php-package
     title: Composer boilerplate
     repository: wodby/php-package-boilerplate
