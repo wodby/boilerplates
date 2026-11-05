@@ -58,7 +58,7 @@ Wodby also supports starter projects maintained by their upstream communities:
 
 | Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
-| [Matomo](https://github.com/matomo-org/matomo) | Self-hosted Matomo analytics projects | [`service-matomo`](https://github.com/wodby/service-matomo) | [`stack-matomo`](https://github.com/wodby/stack-matomo) |
+| [Discourse](https://github.com/discourse/discourse) | Discourse forums, from the stable or ESR release | [`service-discourse`](https://github.com/wodby/service-discourse) | [`stack-discourse`](https://github.com/wodby/stack-discourse) |
 
 The boilerplates available to you depend on the service selected for your
 application. Learn more in the [Wodby CI/CD documentation](https://wodby.com/docs/2.0/cicd/).

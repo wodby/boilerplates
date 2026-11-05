@@ -102,13 +102,13 @@ boilerplates:
         manifest: service.yml
         boilerplate: stable
         ref:
-          tag: ^2026.8
+          tag: ~2026.10
         pipeline: pipeline.yml
       - repository: wodby/service-discourse
         manifest: service.yml
         boilerplate: esr
         ref:
-          tag: ^2026.7
+          tag: ~2026.7
         pipeline: pipeline.yml
 
   - name: drupal-cms
@@ -630,15 +630,3 @@ boilerplates:
         boilerplate: vue
         ref:
           branch: main
-
-  - name: matomo
-    title: Vanilla Matomo
-    repository: matomo-org/matomo
-    managed: false
-    services:
-      - repository: wodby/service-matomo
-        manifest: service.yml
-        boilerplate: vanilla
-        ref:
-          tag: ^5
-        pipeline: pipeline.yml
