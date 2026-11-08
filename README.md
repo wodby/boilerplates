@@ -52,13 +52,5 @@ against an existing OpenAI-compatible endpoint, including the
 Run it from a machine that can reach the private endpoint. It does not deploy a
 model server and is not a selectable application-build boilerplate.
 
-## Upstream boilerplates
-
-Wodby also supports starter projects maintained by their upstream communities:
-
-| Boilerplate | Best for | Wodby service | Wodby stack |
-| --- | --- | --- | --- |
-| [Matomo](https://github.com/matomo-org/matomo) | Self-hosted Matomo analytics projects | [`service-matomo`](https://github.com/wodby/service-matomo) | [`stack-matomo`](https://github.com/wodby/stack-matomo) |
-
 The boilerplates available to you depend on the service selected for your
 application. Learn more in the [Wodby CI/CD documentation](https://wodby.com/docs/2.0/cicd/).
