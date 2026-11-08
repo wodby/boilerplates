@@ -642,3 +642,14 @@ boilerplates:
         ref:
           tag: ^5
         pipeline: pipeline.yml
+
+  - name: matomo-plugins
+    title: Matomo plugins
+    repository: wodby/matomo-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-matomo-custom
+        manifest: service.yml
+        boilerplate: plugins
+        ref:
+          branch: main
