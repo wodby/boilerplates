@@ -618,7 +618,7 @@ boilerplates:
     repository: wodby/matomo-boilerplate
     managed: false
     services:
-      - repository: wodby/service-matomo-custom
+      - repository: wodby/service-matomo-buildable
         manifest: service.yml
         boilerplate: plugins
         ref:
