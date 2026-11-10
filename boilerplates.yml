@@ -613,13 +613,13 @@ boilerplates:
         ref:
           branch: main
 
-  - name: matomo-plugins
-    title: Matomo plugins
+  - name: matomo
+    title: Vanilla Matomo
     repository: wodby/matomo-boilerplate
     managed: false
     services:
       - repository: wodby/service-matomo-buildable
         manifest: service.yml
-        boilerplate: plugins
+        boilerplate: vanilla
         ref:
           branch: main
