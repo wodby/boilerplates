@@ -612,3 +612,14 @@ boilerplates:
         boilerplate: vue
         ref:
           branch: main
+
+  - name: matomo
+    title: Vanilla Matomo
+    repository: wodby/matomo-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-matomo-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
