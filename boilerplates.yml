@@ -634,3 +634,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: moodle
+    title: Vanilla Moodle
+    repository: wodby/moodle-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-moodle-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
