@@ -667,3 +667,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: keycloak
+    title: Vanilla Keycloak
+    repository: wodby/keycloak-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-keycloak-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
