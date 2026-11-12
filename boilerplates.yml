@@ -656,3 +656,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: discourse
+    title: Vanilla Discourse
+    repository: wodby/discourse-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-discourse-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
