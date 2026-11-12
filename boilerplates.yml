@@ -645,3 +645,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: mautic
+    title: Vanilla Mautic
+    repository: wodby/mautic-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-mautic-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
