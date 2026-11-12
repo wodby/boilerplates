@@ -689,3 +689,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: airflow
+    title: Vanilla Airflow project
+    repository: wodby/airflow-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-airflow-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
