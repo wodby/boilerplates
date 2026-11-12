@@ -623,3 +623,14 @@ boilerplates:
         boilerplate: vanilla
         ref:
           branch: main
+
+  - name: odoo
+    title: Vanilla Odoo
+    repository: wodby/odoo-boilerplate
+    managed: false
+    services:
+      - repository: wodby/service-odoo-buildable
+        manifest: service.yml
+        boilerplate: vanilla
+        ref:
+          branch: main
