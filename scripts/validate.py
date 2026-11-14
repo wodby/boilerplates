@@ -26,7 +26,7 @@ SPECIALIZED_UPDATE_REPOSITORY = "wodby/boilerplates"
 DEPENDENCY_FILES = {
     "bundler": ["Gemfile.lock"],
     "cargo": ["Cargo.lock"],
-    "composer": ["composer.lock"],
+    "composer": ["composer.json", "composer.lock"],
     "go": ["go.mod", "go.sum"],
     "npm": ["package-lock.json"],
     "nuget": ["*.csproj", "*.fsproj", "Directory.Packages.props", "packages.lock.json", "*/packages.lock.json"],
