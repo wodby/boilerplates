@@ -13,7 +13,7 @@ the new repository is yours to customize and develop normally.
 | Boilerplate | Best for | Wodby service | Wodby stack |
 | --- | --- | --- | --- |
 | [Angular](https://github.com/wodby/angular-boilerplate) | Client-side Angular applications | [`service-angular`](https://github.com/wodby/service-angular) | [`stack-angular`](https://github.com/wodby/stack-angular) |
-| [Apache Airflow](https://github.com/wodby/airflow-boilerplate) | Airflow DAGs, plugins and Python packages kept in Git | [`service-airflow-buildable`](https://github.com/wodby/service-airflow-buildable) | [`stack-airflow`](https://github.com/wodby/stack-airflow) |
+| [Apache Airflow](https://github.com/wodby/airflow-boilerplate) | Airflow DAGs, plugins and Python packages kept in Git | [`service-airflow`](https://github.com/wodby/service-airflow) | [`stack-airflow`](https://github.com/wodby/stack-airflow) |
 | [ASP.NET Core](https://github.com/wodby/aspnetcore-boilerplate) | .NET web applications and APIs built with ASP.NET Core | [`service-aspnetcore`](https://github.com/wodby/service-aspnetcore) | [`stack-aspnetcore`](https://github.com/wodby/stack-aspnetcore) |
 | [Astro](https://github.com/wodby/astro-boilerplate) | Content-driven websites built with Astro, with server-rendered pages | [`service-astro`](https://github.com/wodby/service-astro) | [`stack-astro`](https://github.com/wodby/stack-astro) |
 | [Dagster](https://github.com/wodby/dagster-boilerplate) | Dagster assets, jobs and schedules built as a code location | [`service-dagster-code`](https://github.com/wodby/service-dagster-code) | [`stack-dagster`](https://github.com/wodby/stack-dagster) |
