@@ -698,7 +698,7 @@ boilerplates:
     repository: wodby/airflow-boilerplate
     managed: false
     services:
-      - repository: wodby/service-airflow-buildable
+      - repository: wodby/service-airflow
         manifest: service.yml
         boilerplate: vanilla
         ref:
