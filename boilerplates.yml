@@ -269,6 +269,7 @@ boilerplates:
         - wodby/php:8.3
         - wodby/php:8.5
       allowed_changes:
+        - composer.json
         - composer.lock
     services:
       - repository: wodby/service-laravel-php
@@ -337,6 +338,7 @@ boilerplates:
         - wodby/php:8.3
         - wodby/php:8.5
       allowed_changes:
+        - composer.json
         - composer.lock
     services:
       - repository: wodby/service-php
@@ -547,6 +549,7 @@ boilerplates:
         - wodby/php:8.4
         - wodby/php:8.5
       allowed_changes:
+        - composer.json
         - composer.lock
     services:
       - repository: wodby/service-symfony-php

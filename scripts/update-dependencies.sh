@@ -341,6 +341,9 @@ _update_composer_boilerplate() {
   local host_repo_dir="${2}"
 
   # Lock-only updates cannot run project scripts that depend on an installed vendor directory.
+  # Boilerplates that set Composer's bump-after-update, such as Symfony's skeleton, also
+  # raise composer.json's lower bounds to the locked versions; Composer offers no way to
+  # turn that off from the command line, so composer.json is an allowed change.
   _boilerplate_run "${update_image}" "${host_repo_dir}" \
     composer update --no-install --no-scripts --no-interaction --no-ansi
 }
